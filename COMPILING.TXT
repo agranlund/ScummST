@@ -1,0 +1,91 @@
+-----------------------------------------
+Prerequisites:
+-----------------------------------------
+1) Install GCC 9.3.1 cross compiler from here: http://tho-otto.de/crossmint.php
+
+2) Build libcmini by navigating to backends/atari/libcmini and typing make
+
+3) A native GCC compiler for your OS is required for building a few tools
+
+Note: I have been building this on MacOS 10.14.6
+Your mileage may vary on other operating systems.
+
+
+-----------------------------------------
+Compiling:
+-----------------------------------------
+You can now build each game by running "make game=x" where x can be one of the following:
+ monkey1 	- Monkey Island 1
+ monkey2 	- Monkey Island 2
+ atlantis	- Indiana Jones and the Fate of Atlantis
+ tentacle	- Day of the Tentacle
+ samnmax	- Sam 'n Max
+
+You need to do a "make game=x clean" first if you have built another game before it.
+The binaries end up in the /bin folder
+
+makedist.sh builds everything and outputs them to the bin folder along
+with the readme and the license.
+
+
+-----------------------------------------
+Building converter or test version for PC
+-----------------------------------------
+The standalone resource converter is built with "make -f Makefile.pc"
+
+You can also build PC versions of ScummST using Makefile.pc
+For example: "make -f Makefile.pc game=x"
+
+These are quite useful during development due to the faster turnaround times.
+You need some kind of recent GCC compiler and to put SDL1.2 inside backends/sdl/sdl
+This is not meant to be fully playable and will appear quite broken
+compared to the proper Atari version. It builds under Cygwin on windows.
+
+
+
+-----------------------------------------
+Random todo notes:
+-----------------------------------------
+
+SCUMM5+6:
+--> Get rid of virtual screen->backbuffer copy/movep
+    Make scumm screen *be* the backbuffer in ST-Low. All drawing must be modified:
+        - text
+        - newgui
+        - drawbox
+        - bitmap
+        - actor
+        - bomp
+
+        As well as VirtualScreen(s)
+            Make all virtual screens point to different locations in same real screen
+            Get rid of hasTwoBuffers. Always draw from original bitmap data.
+            Get rid of vs->xstart and the scummvm scrolling method
+
+        Drawbitmap:
+            Store mask interleaved with planes
+
+    Sound:
+        Convert MONSTER.SOU to more suitable format?
+            Avoid unsigned->signed conversion at runtime
+            Maybe resample to a native DMA frequency
+            Then, at least for DMA, we could play the original data directly without having to copy/convert it during playback
+            (As a first step we could do the above at load-time, trading loadtime for runtime performance)
+
+    Draw text to different screen to avoid masking.
+        (Seems like this was done in later versions of scummvm already)
+
+    Change int to int16 where applicable
+
+    There are still a bunch of runtime checks that could be #ifdefs
+
+    Make installer faster
+
+    Improve disk loading speed
+
+    Support demo versions properly
+
+    YM music could be improved
+
+    Add option for XBIOS sound output
+

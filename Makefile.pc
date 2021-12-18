@@ -1,0 +1,37 @@
+
+EXECUTABLE_EXT  = .EXE
+CXX      	= i686-w64-mingw32-g++
+STRIP		=
+
+
+ifeq ($(game),)
+GAME		= RESOURCECONVERTER
+ENGINE		= SCUMMALL
+EXENAME 	= convert.exe
+OPTFLAGS	= -Os
+SDL_CFLAGS	= 
+OBJS		= backends/converter/converter.o scumm/debugger.o
+
+else
+OPTFLAGS	= -g -O
+SDL_PATH	= ./backends/sdl
+SDL_CFLAGS	= -I$(SDL_PATH)/sdl/include -I$(SDL_PATH)/sdl/include/SDL
+LIBS		= -L$(SDL_PATH)/sdl/lib -lSDLmain -lSDL -lwinmm
+OBJS		= backends/sdl/scummvmico.o backends/sdl/sdl-common.o backends/sdl/sdl.o scumm/debugger.o
+endif
+
+INCLUDES	=   
+LDFLAGS 	= -static-libgcc -static-libstdc++
+CXXFLAGS	= $(OPTFLAGS) -Wall -Wuninitialized -Wno-sign-compare -Wno-long-long -Wno-multichar -Wno-unknown-pragmas -Wno-unused-but-set-variable $(SDL_CFLAGS)
+DEFINES 	= -DUNIX -D__WIN32__
+
+include Makefile.common
+
+backends/sdl/scummvmico.o: backends/sdl/scummvm.ico
+	windres backends/sdl/scummvm.rc backends/sdl/scummvmico.o
+
+go:
+	$(EXECUTABLE) -d1 -p $(EXEPATH)/
+
+	
+

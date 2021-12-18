@@ -1,0 +1,2051 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<TITLE>PARCP Documentation</TITLE>
+</HEAD>
+<BODY BGCOLOR="White" TEXT="Black">
+
+<CENTER>
+<H1><BR>
+                                 PARCP v4.1
+</H1>
+<H2><BR>
+                          written by Petr Stehlik
+</H2>
+<H3>
+                              &copy; 1996-2015
+</H3>
+</CENTER>
+Last Update: December 30, 2015
+<HR>
+<STRONG>
+                            TABLE OF CONTENTS
+</STRONG>
+<MENU>
+<LI><A HREF="#Changes"> 0. Changes in this Document </A>
+<P>
+<LI><A HREF="#Introduction"> 1. Introduction </A>
+    <MENU>
+    <LI><A HREF="#Introduction1"> 1.1 What is PARCP </A>
+    <LI><A HREF="#Introduction2"> 1.2 Advantages of PARCP </A>
+    <LI><A HREF="#IntroductionUSB"> 1.3 PARCP and USB </A>
+    <LI><A HREF="#Introduction3"> 1.4 Features </A>
+         <MENU>
+         <LI><A HREF="#Features1"> 1.4.1 Supported computer platforms </A>
+         <LI><A HREF="#Features2"> 1.4.2 Parallel (=printer) port type (PC only) </A>
+         <LI><A HREF="#Features3"> 1.4.3 Supported operating systems </A>
+         <LI><A HREF="#Features5"> 1.4.4 User interface </A>
+         <LI><A HREF="#Features6"> 1.4.5 Internals </A>
+         <LI><A HREF="#Features7"> 1.4.6 New features since last release </A>
+         <LI><A HREF="#Features8"> 1.4.7 Summary </A>
+         </MENU>
+    <LI><A HREF="#Introduction4"> 1.5 Future Plans </A>
+    <LI><A HREF="#Introduction5"> 1.6 How much does it cost? </A>
+    </MENU>
+<P>
+<LI><A HREF="#AdditionalRequiredHardware"> 2. Additional required hardware </A>
+    <MENU>
+    <LI><A HREF="#AdditionalRequiredHardware1"> 2.1 PARCP cable </A>
+    <LI><A HREF="#AdditionalRequiredHardware2"> 2.2 PARCP UNI-BI adapter (PC only) </A>
+    <LI><A HREF="#AdditionalRequiredHardware3"> 2.3 PARCP USB adapter </A>
+    </MENU>
+<P>
+<LI><A HREF="#Installation"> 3. Installation </A>
+    <MENU>
+    <LI><A HREF="#Installation1"> 3.1 Requirements </A>
+    <LI><A HREF="#Installation2"> 3.2 PARCP Concept </A>
+         <MENU>
+         <LI><A HREF="#Concept1"> 3.2.1 Server and Client </A>
+         <LI><A HREF="#Concept2"> 3.2.2 Running Server </A>
+         <LI><A HREF="#Concept3"> 3.2.3 Running Client </A>
+         <LI><A HREF="#Concept4"> 3.2.4 CLI commands </A>
+         <LI><A HREF="#Concept5"> 3.2.5 ParShell </A>
+         </MENU>
+    <LI><A HREF="#Installation3"> 3.3 State of parallel port </A>
+    <LI><A HREF="#Installation4"> 3.4 Before running it... </A>
+    <LI><A HREF="#Installation5"> 3.5 PAR_IN, PARCPCFG (PC only) </A>
+    </MENU>
+<P>
+<LI><A HREF="#Configuration"> 4. Configuration </A>
+    <MENU>
+    <LI><A HREF="#Configuration1"> 4.1 CFG directives reference </A>
+         <MENU>
+         <LI><A HREF="#CFGDirective1"> 4.1.1 Hardware specific Section (PC only) </A>
+         <LI><A HREF="#CFGDirective2"> 4.1.2 General Section </A>
+         <LI><A HREF="#CFGDirective3"> 4.1.3 Debug Section </A>
+         <LI><A HREF="#CFGDirective4"> 4.1.4 ParShell Section </A>
+         <LI><A HREF="#CFGDirective5"> 4.1.5 PARCP.CFG example </A>
+         </MENU>
+    <LI><A HREF="#Configuration2"> 4.2 Command line parameters </A>
+    <LI><A HREF="#Configuration3"> 4.3 Configuration under Client </A>
+    <LI><A HREF="#Configuration4"> 4.4 PARCP Script file </A>
+    </MENU>
+<P>
+<LI><A HREF="#Miscellaneous"> 5. Miscellaneous </A>
+    <MENU>
+    <LI><A HREF="#Miscellaneous1"> 5.1 DISCLAIMER </A>
+    <LI><A HREF="#Miscellaneous2"> 5.2 Hints </A>
+    <LI><A HREF="#Miscellaneous3"> 5.3 Troubleshooting </A>
+    </MENU>
+<P>
+<LI><A HREF="#Resources"> 6. Resources &amp; Acknowledgments </A>
+    <MENU>
+    <LI><A HREF="#Resources1"> 6.1 Related programs </A>
+    <LI><A HREF="#Resources2"> 6.2 Resources </A>
+    <LI><A HREF="#Resources3"> 6.3 Getting the PARCP cable </A>
+    <LI><A HREF="#Resources4"> 6.4 Greetings </A>
+    <LI><A HREF="#Resources5"> 6.5 Contacting the author </A>
+    </MENU>
+</MENU>
+<P>
+<HR>
+
+
+<H1><BR><A NAME="Changes"></A>0. Changes in this Document
+</H1>
+<UL>
+  <LI>Added explicit new <a href="#IntroductionUSB">paragraphs about PARCP-USB</a>.
+  <LI><i>PARCP.CFG</i> is searched for in user's home folder now as well
+  <LI><i>USBSerial</i> option slightly documented
+  <LI><i>-c</i> command line option documented
+  <LI>udev rule for PARCP-USB on Linux added
+  <LI>the new <strong>EXEC</strong>/<strong>LEXEC</strong> commands documented
+</UL>
+
+
+<H1><BR><A NAME="Introduction"></A>1. Introduction
+</H1>
+<P>
+This is the second try of an useful documentation, I'm not good at that...
+Please read it if you can. If you're too impatient and can't read whole
+documentation before first start of PARCP, please read the "Quick, Three
+lines guide to PARCP installation and use" in the <A HREF="quick.txt">QUICK.TXT</A> file.
+
+
+<H2><BR><A NAME="Introduction1"></A> 1.1 What is PARCP?
+</H2>
+<P>
+PARCP stands for PARallel CoPier. It does copy files between two computers.
+It acts as a file network running over parallel (=printer) ports of those
+computers. This allows you to copy many and large files very quickly from
+one machine to another, either by simple drag &amp; drop, or automated in batch
+mode or you can choose from two different user interfaces (command line like
+in a FTP client and fullscreen windows just like Norton Commander).
+In 2014 I developed <a href="http://joy.sophics.cz/parcp/parcp-usb.html">PARCP-USB</a>
+adapter that allows to interconnect computers with parallel ports (Atari and old PC
+machines) with computers that have USB ports (all newer computers basically). So
+PARCP is no longer tied with parallel ports only.
+
+
+<H2><BR><A NAME="Introduction2"></A> 1.2 Advantages of PARCP
+</H2>
+<P>
+ It's cheap, it's fast, it's available everywhere, and it's easy to setup and use.
+<UL>
+<LI>[cheap and easy]
+<P>
+  The PARCP cable is all that's needed to connect two computers, and it can
+  be build for very few bucks. You can even look around and if you find
+  parallel LapLink cable, you need nothing but PARCP!<BR>
+  With the PARCP-USB adapter you can use an ordinary USB cable. No need to solder anything.
+<P>
+<LI>[fast and available everywhere]
+<P>
+  Connecting two computers with the cable takes only few seconds. All computers
+  have either parallel ports or USB ports.
+<P>
+<LI>[easy]
+<P>
+  Not requiring a netcard also means that apart from connecting the cables,
+  everything else is software configuration (which in principle could be
+  made very easy).
+<P>
+<LI>[available everywhere]
+<P>
+  PARCP can connect two computers running different operating systems. No
+  need to search for a common network protocol, PARCP itself is the 'common
+  protocol'.
+<P>
+<LI>[easy and fast]
+<P>
+  PARCP needs not to be 'installed' in the way you know it from Microsoft
+  operating systems - complicated procedure, several reboots, no ability to
+  uninstall. No! PARCP can be just unpacked and started - and it works!
+  Without reboots, without conflicts with other hardware or software
+  components, without headaches...
+<P>
+<LI>[available everywhere and easy]
+<P>
+  PARCP can even connect two different platforms, like is IBM PC or clone
+  and Atari ST (or compatible). For Atari computers it's even more
+  important, because there are nearly no network cards.
+<P>
+<LI>[fast and easy]
+<P>
+  Sometimes a ZIP disk is used to transfer files from one computer to
+  another - first copy files from one computer to ZIP, then copy files from
+  ZIP to another computer.
+<P>
+  Is that easy? Fast? No!
+<P>
+  PARCP easily outperforms parallel ZIP in reading - so if you connect
+  those two computers with a PARCP cable, it's more than two times faster
+  to copy the same amount of data from one computer to another.
+</UL>
+
+
+<H2><BR><A NAME="IntroductionUSB"></A> 1.3 PARCP and USB
+</H2>
+<P>
+With the invention of PARCP-USB adapter the PARCP got zero setup on a PC and it's also generally simpler
+to use on Atari. You just plug the PARCP-USB adapter into your Atari or old PC and start PARCP software. No need to configure
+anything. No need to bother with PAR_IN. You don't care about PC parallel port number, its type, BIOS setup, current input/output state etc.
+ Luckily USB devices are plug&amp;play and PARCP software detects everything automatically.
+<P>
+Best of all, with PARCP-USB it's much safer to interconnect two computers. Actually the connection can be permanent and you can turn
+on/off any of the two computers freely. There's no danger compared to using the special PARCP cable that requires some caution.
+<P>
+<STRONG>The great thing is that with PARCP-USB you just plug&amp;play - and ignore all sections of this document that talk about PARCP cable, parallel port setup or issues with it.</STRONG>
+
+<H2><BR><A NAME="Introduction3"></A> 1.4 Features
+</H2>
+<P>
+<H3><BR><A NAME="Features1"></A>   1.4.1 Supported computer platforms
+</H3>
+<P>
+PARCP has been designed to work on two different computer platforms:
+<P>
+<UL>
+  <LI> Atari ST/STE/TT/Falcon and compatible computers (Medusa/Hades).
+    PARCP is also compatible with all sorts of accelerator cards such
+    as AfterBurner040 or CT60 for Falcon etc. Milan is not supported yet because it
+    lacks the ST-compatible parallel port.
+<P>
+  <LI> IBM PC 386 and compatible clones (i.e. machines with 32-bit x86 CPU).
+    PARCP has been tested succesfully on AMD 386, Intel 486, Intel Pentium,
+    Cyrix 6x86 and M2 as well as on AMD K6-2 processors.<BR>
+    Nowadays also 64-bit AMD and Intel CPUs are supported. And PARCP runs even on ARM!
+</UL>
+<P>
+ <I>
+ I will use the word <STRONG>Atari</STRONG> as a general reference for any of the computers with
+ Motorola CPU inside and running TOS or compatible operating system (MiNT/MagiC)
+ and the word <STRONG>PC</STRONG> for any computer with Intel or compatible CPU and running
+ DOS or compatible operating system (DOS/Windows9x/OS/2 for PARCP with cable, Windows XP and up for PARCP-USB) or Linux based one.
+ </I>
+<P>
+The main feature of PARCP is the ability of connecting of any two supported
+computers:
+<P>
+<UL>
+  <LI> Atari <=====> Atari<BR>
+  <LI> Atari <=====> PC<BR>
+  <LI> PC    <=====> PC<BR>
+</UL>
+<P>
+<P>
+<H3><BR><A NAME="Features2"></A>   1.4.2 Parallel (=printer) port type (PC only, not for PARCP-USB)
+</H3>
+<P>
+Parallel ports of PC computers are basically of two different types:
+<P>
+<UL>
+  <LI> unidirectional
+  <LI> bidirectional
+</UL>
+<P>
+  In addition, enhanced parallel ports (EPP and ECP) are supported as well
+and are programmed as bidirectional ones.
+<P>
+The unidirectional parallel port is not able to read bytes on data lines
+but has got five additional input lines for various purposes. Nearly all
+known programs use these additional input lines for reading 4-bit nibbles.
+They use so called 'LapLink' cable and 'LapLink' method of transferring data.
+<P>
+On the contrary, PARCP together with UNI-BI interface can read data
+by full 8-bit at once just like on bidirectional parallel port.
+Simply said PARCP UNI-BI interface makes you bidirectional parallel port from
+your old unidirectional one.
+That's why PARCP is usually about two times faster than its competitors!
+<P>
+If you have got an ECP or a EPP parallel port, then PARCP should work
+at the full speed and no hardware interface is needed.
+<P>
+Of course PARCP supports all standard parallel ports of PC - you can
+choose which one you will use for PARCP transfers in the process of
+configuration with PARCPCFG.
+
+
+<H3><BR><A NAME="Features3"></A>   1.4.3 Supported operating systems
+</H3>
+<P>
+PARCP comes in three different binary files compiled for three supported
+platforms: Atari, DOS/Windows and Linux.
+All three binary versions of PARCP look and behave exactly the same way,
+which is good for user learning its capabilities.
+
+<H4>
+  Atari computers (any model):
+</H4>
+<UL>
+    <LI> TOS 1.04+
+    <LI> MiNT
+    <LI> MagiC
+</UL>
+<H4>
+  PC computers with PARCP cable:
+</H4>
+<UL>
+    <LI> DOS flavors (MS-DOS, DR DOS, FreeDOS)
+    <LI> Microsoft Windows95/Windows98/WindowsME (32-bit DOS application with LFN support)
+    <LI> OS/2 (in DOS mode)
+    <LI> Linux on i386/amd64 (native application)
+</UL>
+<H4>
+  PC computers with PARCP-USB:
+</H4>
+<UL>
+    <LI> Microsoft WindowsXP/Vista/7/8+ on i386/amd64 (new native application!)
+    <LI> Linux on i386/amd64/ARMv6 (native application)
+</UL>
+<P>
+    <H5>Microsoft WindowsNT/Windows2000/WindowsXP and PARCP cable</H5>
+    Please note the old PARCP 3.90 can't run under WindowsNT/W2K/WXP out-of-the-box
+    because these operating systems don't allow user programs to access
+    the hardware registers of parallel ports directly. There are several 3rd party
+    drivers for Windows that can overcome that and allow PARCP to run:
+    <ul>
+      <li><a href="http://www.embeddedtronics.com/public/Electronics/minidaq/userport/UserPort.zip">UserPort</a> (tested by Michael Schmid and reported to work) </li>
+      <li><a href="http://www.beyondlogic.org/porttalk/porttalk.htm">PortTalk</a>  (another possible solution, untested)</li>
+      <li><a href="http://www.zeecube.com/">ParPort2004</a> (commercial solution, tested by me) </li>
+    </ul>
+    For LFN support (long file names) you may try installing the following driver: <a href="http://clio.rice.edu/djgpp/ntlfn08b.zip">NT LFN TSR</a>
+    <BR>
+    If you need to copy some files from a NTFS formatted drive without diving into the WindowsNT+ headaches you can either
+    use <A HREF="http://www.sysinternals.com">NTFS driver for DOS/Windows9x</A>
+    that will allow you to read NTFS under plain DOS or Windows, or you can
+    use a recent version of Linux kernel (2.4.x) that contains NTFS driver.
+    <H5>PARCP-USB requires WindowsXP or newer</H5>
+    PARCP-USB adapter, contrary to the PARCP cable, requires newer Windows OS (because DOS does not support USB). The PARCP v3.94+
+    comes with a native MS-Windows binary that runs on both 32-bit and 64-bit Windows.
+<H4>
+Main PARCP features under multitasking operating systems (all but single TOS):
+</H4>
+<UL>
+  <LI> <H5> non-blocking waiting for user action </H5>
+    PARCP doesn't hog OS nor CPU while waiting for user - the average load
+    is close to zero when PARCP is idle. Therefore other applications
+    continue working at full speed when PARCP is waiting. Thus you can have
+    PARCP Server running all the time in the background, always ready for transmission.
+<P>
+  <LI> <H5> support of long file names (LFN) and file attributes </H5>
+    PARCP allows you to copy files from one operating system to another
+    with original long file names preserved. Some rather unusual combinations
+    of possible transfers of long file names between different environments
+    are listed here:
+<P>
+  <UL>
+    <LI> Windows95's V-FAT <=====> MiNT's minix-fs<BR>
+    <LI> Linux's ext2-fs   <=====> MagiC's V-FAT<BR>
+    <LI> MiNT's ISO9660    <=====> OS/2's HPFS<BR>
+  </UL>
+</UL>
+
+
+<H3><BR><A NAME="Features5"></A>   1.4.4 User Interface
+</H3>
+<P>
+PARCP 3.x comes with two different users interfaces. Historically first is
+the FTP-like, command line interface (CLI). Now the preferred interface is
+the new, fullscreen, easy to use, arrow and function keys driven
+(ParShell). If you've ever seen programs like Norton Commander, Volkov
+Commander, Midnight Commander or alike, the ParShell will be familiar to
+you.
+<P>
+The working environment can be utilized to your personal needs by many
+switches and parameters (please look into section 3.2.4).
+<P>
+PARCP can also be used in non-interactive way, without any user interface.
+This includes sending files by simple drag &amp; drop onto PARCP's icon on
+desktop (TOS 2.x, MultiTOS, MagiC, Windows95) and also script files
+processing (see section 4.4).
+<P>
+<P>
+<H3><BR><A NAME="Features6"></A>   1.4.5 Internals
+</H3>
+<P>
+PARCP is written in C. Additional assembler routines for both
+Motorola and Intel &amp; compatible processors have been written for the highest possible
+transfer speed. The source code is 100% portable between all platforms and
+is compiled by GNU C 2.95.2 for all three destination operating systems -
+the result is very efficient full 32-bit code.
+<P>
+The support of special features of various operating systems is a matter
+of well written GNU C libraries (MiNTlibs on Atari and DJGPP libs on DOS).
+<P>
+It should be relatively simple to port PARCP to another platform with GNU C compiler
+and a little knowledge of the parallel port programming.
+<P>
+<P>
+<H3><BR><A NAME="Features7"></A>   1.4.6 New features since last release
+</H3>
+<P>
+The list of most important changes and features of new PARCP version compared
+to previously released PARCP v3.90:
+<P>
+<UL>
+<LI> PARCP-USB support
+<LI> bugfixes, bugfixes and once again, more bugfixes!
+<LI> ParShell allows to use numbers 1-9 next to function keys F1-F9
+<LI> the new powerful EXEC command for running programs remotely!
+</UL>
+<P>
+For more detailed informations please read the file <A HREF="history.txt">HISTORY.TXT</A>.
+<P>
+<P>
+<H3><BR><A NAME="Features8"></A>   1.4.7 Summary
+</H3>
+<P>
+PARCP runs on Atari as well as on PC computers and clones, under all
+known operating systems that provide DOS or TOS support. PARCP makes the best use of any combination of hardware and OS.
+<P>
+There are also other programs for connecting computers via parallel ports,
+but only PARCP can connect any two computers thus you need not to learn how
+to use many different programs. PARCP is also much faster than its competitors,
+runs under more operating systems, it's simpler to use and supports multitasking.
+<P>
+<P>
+
+
+<H2><BR><A NAME="Introduction4"></A> 1.5 Future Plans
+</H2>
+<P>
+There are some things left to do, as well as a few things to fix.
+The "to do" list is as follows, in no particular order.
+<P>
+<UL>
+<LI> New, much faster transfer routines
+<LI> On-the-fly compression and decompression of files for even higher transfer rate
+<LI> Yes to All and No to All answers in the Overwrite dialog
+<LI> Possibility of Rename in the Overwrite dialog
+</UL>
+<P>
+Write me if you want another feature...
+<P>
+Other neat features would be:
+<P>
+<UL>
+<LI> a port of PARCP to Amiga or Apple computers and mobile platforms
+<LI> a native GUI for Atari GEM, Windows and Linux
+</UL>
+<P>
+
+
+<H2><BR><A NAME="Introduction5"></A> 1.6 How much does it cost?
+</H2>
+<P>
+PARCP is freeware since June 2015 thus it's available completely for free.
+The author thanks sincerely to all the registered PARCP users that payed the original shareware
+fee in previous 19 years. It helped greatly to keep this project alive.
+
+<H1><BR><A NAME="AdditionalRequiredHardware"></A>2. Additional hardware
+</H1>
+<P>
+Please note that when connecting two PC computers together, you can use
+the well known LapLink cable (ask for Parallel LapLink cable in your
+nearest computer shop).
+<P>
+Though for connecting an Atari computer to another computer (PC or Atari,
+doesn't matter) you have to use PARCP cable.
+<P>
+<P>
+
+
+<H2><BR><A NAME="AdditionalRequiredHardware1"></A> 2.1 PARCP cable
+</H2>
+<P>
+<PRE GRAPHIC>
+*****************************************************************
+* Note: you need not to build the cable, you can simply buy it! *
+*                                                               *
+*  Please refer to the section 6.3 of this document.            *
+*****************************************************************
+</PRE>
+<P>
+The following diagram shows you how to build your own parallel cable for
+use with my PARCP (PARallel CoPy). This cable allows you to connect your
+computer with any other computer if both machines have either bidirectional
+parallel ports or UNI-BI adapter fitted.
+<P>
+The easiest way how to build the cable is to buy a cable for dataswitch.
+It's usually marked as 25M-25M. That means there are MALE Canon-25
+connectors on both ends of that cable. The cable has either 18 or 25 wires
+in itself. The 18-wires one is sufficient for our needs, because PARCP uses
+just 18 wires. When you buy that cable, you just need to exchange wires on
+pins 1 an 11 at one ends of cable (and to cut the wires on unused pins such
+as pin 10,12,13..17).
+<P>
+The PARCP cable should consist of just 18 wires. The wiring diagram is as
+follows:
+<P>
+<IMG SRC="parcable.gif" border=0>
+<!--
+<PRE GRAPHIC>
+Canon-25 MALE                      Canon-25 MALE
+-------------                      -------------
+pin         connection             pin
+ 1 ............................... 11  (Strobe => Busy)
+ 2 ...............................  2  (Data 0)
+ 3 ...............................  3  (Data 1)
+ 4 ...............................  4  (Data 2)
+ 5 ...............................  5  (Data 3)
+ 6 ...............................  6  (Data 4)
+ 7 ...............................  7  (Data 5)
+ 8 ...............................  8  (Data 6)
+ 9 ...............................  9  (Data 7)
+11 ...............................  1  (Busy <= Strobe)
+18 ............................... 18  (GND of Data 0)
+19 ............................... 19  (GND of Data 1)
+20 ............................... 20  (GND of Data 2)
+21 ............................... 21  (GND of Data 3)
+22 ............................... 22  (GND of Data 4)
+23 ............................... 23  (GND of Data 5)
+24 ............................... 24  (GND of Data 6)
+25 ............................... 25  (GND of Data 7)
+</PRE>
+</IMG>
+-->
+<P>
+The 'schematics' above wanted to say that all 8 data bits are straight
+wires, while the Strobe and Busy signals are crossed in one connector. The
+GND is connected in both connectors as well, of course (please note that
+some cables do not have enough wires for connecting pins 18-24. In this
+case it should be OK to connect just the 25th pin).
+<P>
+This cable also works with ST-Trans &copy; Atari 1992, with plip protocol of
+MiNT-Net &copy; Kay Roemer and with HDD_DMN3 by MC Soft &amp; Hard.
+<P>
+Warning: if the cable length should exceed 5 meters, please get a cable
+with proper metal shielding, otherwise random errors may occur during the transfer.
+<P>
+<P>
+
+
+<H2><BR><A NAME="AdditionalRequiredHardware2"></A> 2.2 PARCP UNI-BI adapter (PC only)
+</H2>
+<P>
+The UNI-BI HW adapter for PARCP is my own invention. It allows software to
+use originally unidirectional parallel port of old PC's as new, fast
+bidirectional one. PARCP can't use unidirectional port without this simple
+hardware interface. In other words: if PARTEST.EXE detects your parallel
+port as unidirectional, you must plug this interface into that port and let
+PARCP know that the interface is plugged by line UNI-BI = TRUE in your
+PARCP configuration file.
+<P>
+The UNI-BI adapter again is not sold anywhere, but when you know where the
+iron gets hot you should be able to build one yourself.
+<P>
+You need to buy/find_at_home:
+<P>
+<UL>
+  <LI> 1x connector Canon-25 MALE
+  <LI> 1x connector Canon-25 FEMALE
+  <LI> 1x IC 74HC257
+  <LI> 1x IC 74HC574
+  <LI> 1x plastic cover of Canon-25 - Canon-25 reduction
+  <LI> some thin wire and solder iron (yes, you have to solder :-)
+</UL>
+<P>
+The plastic cover looks like this:
+<P>
+<PRE GRAPHIC>
+        +--+                 +--+
+        |C |_________________| C|
+ this   |A         a          FA|  this
+ side   |NM  I   bunch   I    EN|  side
+ plug   |NA  C    of     C    MN|  ready
+  to    |OL  1   wires   2    AO|   for
+  PC    |NE                   LN|  PARCP
+printer |2  _________________ E2|  cable
+ port   |5 |                 | 5|
+        +--+                 +--+
+</PRE>
+<P>
+<P>
+  The wiring diagram of UNI-BI HW adapter is as follows:
+
+  <IMG SRC="unibired.gif" ALT="Uni-Bi HW adapter schema">
+<!--
+<P>
+<PRE GRAPHIC>
+UNI (PC port)                      BI (PARCP cable)
+Canon-25 MALE                      Canon-25 FEMALE
+ 1 ..............................  1
+ 2 -> IC1.2              IC1.19 <- 2
+ 3 -> IC1.3              IC1.18 <- 3      The IC's are also wired together:
+ 4 -> IC1.4              IC1.17 <- 4
+ 5 -> IC1.5              IC1.16 <- 5      IC1.10 ..... IC2.8 + IC2.15
+ 6 -> IC1.6              IC1.15 <- 6      IC1.11 ..... IC2.1
+ 7 -> IC1.7              IC1.14 <- 7      IC1.12 ..... IC2.10
+ 8 -> IC1.8              IC1.13 <- 8      IC1.13 ..... IC2.6
+ 9 -> IC1.9              IC1.12 <- 9      IC1.14 ..... IC2.13
+10 -> IC2.9                               IC1.15 ..... IC2.3
+11 .............................. 11      IC1.16 ..... IC2.11
+12 -> IC2.7                               IC1.17 ..... IC2.5
+13 -> IC2.12                              IC1.18 ..... IC2.14
+14 -> IC1.1                               IC1.19 ..... IC2.2
+15 -> IC2.4                               IC1.20 ..... IC2.16
+16 -> IC1.20 + IC2.16
+17 -> IC1.11 + IC2.1
+25 -> IC1.10 + IC2.8 + IC2.15 ... 25
+<P>
+IC1 = 74HC574
+IC2 = 74HC257
+</PRE>
+-->
+<P>
+I think the *HC* is important, because both IC's eat current from PC's
+parallel port and the maximum draw from it can be about 10 mA only IIRC.
+<P>
+If you didn't understand the diagram above, drop me a note and I'll try to
+explain it better.
+<P>
+<P>
+
+<H2><BR><A NAME="AdditionalRequiredHardware3"></A> 2.3 PARCP USB adapter
+</H2>
+<P>
+PARCP-USB is in detail described at <A HREF="http://joy.sophics.cz/parcp/parcp-usb.html">its own page</A>.
+Generally speaking it's an adapter that is able to convert the parallel port of Atari (or a legacy PC) into a full speed USB port that can be
+simply connected to other PC's USB port with a plain USB cable. There's no need for a special PARCP cable anymore. And PARCP auto configures everything automatically.
+
+
+<H1><BR><A NAME="Installation"></A>3. Installation
+</H1>
+<P>
+
+
+<H2><BR><A NAME="Installation1"></A> 3.1 Requirements
+</H2>
+<P>
+<U>
+   Atari PARCP:
+</U><BR>
+<P>
+TOS PARCP comes in two versions (PARCP.TTP and PARCP030.TTP).
+PARCP.TTP is compiled for MC68000 and therefore will run on every TOS
+compatible machine.
+PARCP030.TTP is compiled for MC68030, so it will not run on plain ST or STE,
+including Mega ST/STE. It however will run on ST equipped with PAK68/3,
+and of course on a TT030, Falcon030, Medusa T40/T60, Hades40/60 and all
+other clones with processors MC68030/40/60.
+Note: FPU is not required to run PARCP030.TTP.
+<P>
+Atari PARCP requires one ST compatible parallel port (driven by Yamaha YM-2149
+and by MFP 68901). The Atari compatible parallel port is bidirectional
+by nature, so for Atari you don't need any hardware interface...
+<P>
+<P>
+<U>
+   Common requirements for DOS version of PC PARCP:
+</U><BR>
+<P>
+PARCP is full 32-bit application thus it requires an Intel 80386 or compatible
+CPU (386SX will do, as well as AMD, TI or other equivalents). PARCP can't
+run on 80286 or lower CPU, unfortunately (should not be a real drawback
+nowadays, I think :-)
+PARCP runs fine on all 486SX/DX, Pentium, 6x86 and other compatible
+processors, of course.
+Note: FPU is not required to run PARCP.EXE.
+<P>
+PARCP requires one PC compatible parallel (= printer) port, naturally.
+You must specify parallel port's base address and the port's type to let
+PARCP know which port it should work with. Don't be afraid, PARCPCFG will
+do this job for you.
+<P>
+<U>
+   PC parallel ports:
+</U><BR>
+<P>
+Several types of parallel ports exist on IBM computers and clones. You can
+find out what kind of ports are in your machine by running PARCPCFG.
+Generally the better is to use PARCP Cable and a bidirectional, PS/2, EPP or ECP
+parallel port. But if you're going to use LapLink cable only, you need not
+to change the type of your parallel port - LapLink cable works with any
+parallel port type. In other words, skip this section if you want to use
+LapLink cable.
+<P>
+In most modern IBM and compatible machines you can use the Bios setup
+(entered right after reboot by pressing the Del key, usually)
+for selecting the type of your parallel port. For example on my machine
+(Soyo 5VA motherboard) I can choose between SPP, EPP, ECP and ECP with DMA
+modes. For PARCP the best is the EPP parallel port mode, though the others
+work OK as well. But that again maybe a special facility of my Bios, so
+please always select the EPP or PS/2 mode, if possible.
+<P>
+On some older additional ISA cards with parallel port you can usually select
+the type of parallel port by setting up some jumpers on the board (see manual
+of your motherboard/parallel ports card).
+<P>
+Both parallel port's base address and parallel port type as well as the
+possible use of UNI-BI adapter are specified in PARCP configuration file
+(see detailed description of that configuration file elsewhere in this
+document).
+<P>
+<U>
+   DOS specific requirements:
+</U><BR>
+<P>
+PARCP is designed to be run in a DOS environment. It also works very well
+under Windows95 and OS/2 in a DOS session. PARCP is a 32-bit application,
+so it needs DPMI services to run in DOS environment. DPMI services are provided
+by QEMM, 386MAX, Windows 3.11 and Windows95 (don't know about OS/2).
+If you don't have one of these programs you can use CSWDPMI.EXE (it's enclosed
+in PARCP distribution archive). All you need is to place CSWDPMI.EXE into
+the %PATH% (e.g. C:\DOS) where the PARCP can find it and run automatically.
+<P>
+<U>
+   Linux specific requirements:
+</U><BR>
+<P>
+PARCP is compiled on Ubuntu 12.04 distribution.
+Though I expect PARCP will work with any current Linux distribution (if
+not, simply let me know).
+<P>
+In order to get permissions to access the parallel port hardware directly it must be run
+with root privileges (i.e. run it when you are logged as 'root' - otherwise
+it will ends immediately with a core file).
+<P>
+For use with PARCP-USB you want to configure your udev rule so you can then run PARCP as
+a regular user. Copy the following snippet into your /etc/udev/rules.d/ directory and name the
+file say <strong>parcp.rules</strong>. Then you need to trigger your udev to reload the rules using <code>sudo udevadm trigger</code>:
+<P>
+<code>
+######### begin of parcp.rules #######<br>
+# PARCP-USB<br>
+SUBSYSTEM=="usb", ATTR{idVendor}=="03eb", MODE="0666", GROUP="plugdev"<br>
+######### end of parcp.rules #########<br>
+</code>
+<P>
+
+
+<H2><BR><A NAME="Installation2"></A> 3.2 PARCP Concepts
+</H2>
+<P>
+This section explains some concepts you must understand to figure out how to
+run it and how to configure the PARCP options.
+<P>
+<P>
+<H3><BR><A NAME="Concept1"></A>   3.2.1 Server and Client
+</H3>
+<P>
+When both computers are connected by the parallel cable, one must become
+the PARCP Server and the other is then PARCP Client. The Server serves the
+Client (it receives or sends files and does other things Client may want).
+The Client is that machine you are sitting in front of, usually. Since
+Atari computers' text output is a bit slower compared to PC computers, I
+would suggest to use an PC computer as Client and Atari as Server, in this
+constellation of computers.
+<P>
+As you may see, it's up to you which machine will be the Server and which one
+will be the Client - it's not important at all, since PARCP behaves always
+exactly the same on all supported platforms. The only thing you should do
+is to run PARCP Server before PARCP Client.
+<P>
+Please note: if you run PARCP as Server on both computers by a mistake,
+nothing happens. But do not try to run PARCP Clients on both computers,
+that *might* be dangerous.
+<P>
+<P>
+<H3><BR><A NAME="Concept2"></A>   3.2.2 Running Server
+</H3>
+<P>
+In order to run the PARCP as Server you have to put the -s on the command line
+of PARCP (please have a look at the command line parameters section in this
+documentation). You can also start PARSERVE program, it will run as PARCP
+Server automatically (without any command line parameter).
+<P>
+<U>
+ Example:
+</U><BR>
+<P>
+  Atari users will double click on PARCP.TTP and write the -s parameter into
+  the command line window then press Enter. They also can double click on
+  PARSERVE.TOS.
+<P>
+  PC users will use a command line interpreter (either standard COMMAND.COM
+  in DOS or Linux's shell or in Windows 'Run program') and type at the line
+<P>
+  <STRONG> parcp -s </STRONG>
+<P>
+  then press Enter. They could also type just
+<P>
+  <STRONG> parserve </STRONG>
+<P>
+  and press Enter.
+<P>
+After starting Server reads the configuration file and waits for connection
+with Client. It will wait until a connection occurs or until you press the
+Abort Key (it's the combination of Ctrl-leftShift-Alternate in all
+operating systems except of the Linux, where it is Control-C).
+<P>
+Running PARCP Server simply waits for Client's commands. If it gets a command,
+it does what Client wants and then it waits again for another command.
+Server quits when it receives the QUIT command from Client.
+<P>
+You can abort the Server anytime by pressing the Abort Key, however
+it's not recommended, since the Client couldn't know then that Server
+is down already.
+<P>
+When the Server runs under a singletasking OS (TOS/DOS), the whole computer
+is blocked until the Server exits. If you don't like this, then simply run
+PARCP Server under a multitasking OS (MiNT, MagiC, Linux, Windows95, OS/2)
+where it could run in the background. This way you can continue working with
+your Server computer while it copies files in background, though the
+transfer speed is slightly lower than under a singletasking OS (this is not
+always true, I've been told that under Windows95 the performance sometimes
+is even higher than under plain DOS...)
+<P>
+<P>
+<H3><BR><A NAME="Concept3"></A>   3.2.3 Running Client
+</H3>
+<P>
+By default, when you run PARCP without any command line parameter it
+runs as the PARCP Client. After reading the configuration file and
+initialization the Client tries to connect with the Server for 10 seconds.
+If it is not successful it exits back to desktop or shell.
+<P>
+After successful connection the PARCP Client:
+<P>
+<UL>
+<LI> Sends its actual parameters to Server
+<P>
+    Client sends the actual state of ProcessSubDir, CaseSensitive,
+    ShowHidden, KeepTimeStamp, KeepAttribs, CRC, OverOlder and OverNewer
+    switches as well as BlockSize, DirectoryLines and DirSort values.
+    The Server's original values are overriden by Client's ones. That means
+    you need to change these values on Client's computer only and they will
+    be transferred to Server automatically.
+<P>
+<LI> Checks the actual size of screen and other computer parameters
+<P>
+    PARCP is smart - it tries to get the number of lines by
+    ioctl(TIOCGWINSZ) and if it fails (or is not supported), environment
+    variables "LINES" and "COLUMNS" are read. If the variables are not
+    defined, PARCP counts on 25 lines with 80 columns (standard TOS/DOS
+    screen size).
+<P>
+    Then PARCP finds out the type of computer it currently runs on and
+    also the type of operating system by calling uname() function.
+<P>
+<LI> Executes possible script file
+<P>
+    If a script file was defined (by -B command line parameter or by
+    Autoexec directive in PARCP configuration file) and the file exists,
+    it's opened and the commands in it are executed line by line. More
+    details in section 4.4.
+<P>
+<LI> Sends possible drag &amp; dropped files
+<P>
+    If there are other command line parameters than -F and -B, they're
+    considered as names of files destined for sending to the Server. So
+    they're sent and then Client ends. If QuitAfterDrop directive of Client
+    is set to Yes, the PARCP Server quits as well, otherwise it will wait
+    for another connection.
+<P>
+    This quick and easy way of copying files I call Drag &amp; drop mode, because
+    I expect users will use this feature in GUI (such as Atari's desktop or
+    Windows95 Explorer) and will copy files by simple dragging them over
+    PARCP icon and dropping the files onto it.
+<P>
+<LI> Starts user interface
+<P>
+    If the Shell directive is set to Yes, ParShell (fullscreen user
+    interface) is started, otherwise the CLI (FTP-like) is ready with a
+    prompt line.
+</UL>
+<P>
+<P>
+<H3><BR><A NAME="Concept4"></A>   3.2.4 CLI commands
+</H3>
+<P>
+PARCP CLI user interface is very similar to a ftp client's interface. If you
+are familiar with FTP'ing you may need not to continue reading :-) Anyway,
+read the next lines, for sure.
+<P>
+Client's commands are either without any parameter or allow/require one
+parameter. There are three types of parameters:
+<P>
+<UL>
+<LI> filename - that is a 'template' or a 'dir'
+    'template' is basically a filename which can contain the wildcards
+    'dir' is name of a directory or generally a path to a directory
+<P>
+<LI> boolean value: you must put there ON or OFF (or Yes and No, if you
+    prefer it).
+<P>
+<LI> a number - that's just the PGLEN command's parameter
+</UL>
+<P>
+ If the parameter is in brackets ("[parameter]"), it can be omitted.
+ If you omit the parameter of DIR and LDIR commands they simply display
+ all files. If you however omit the parameters of the other commands (HASH,
+ CASE, HIDDEN, SUBD, KEEP, ATTRIB, CRC) they simply negate its value (from
+ Yes to No and vice-versa) and display its new state.
+<P>
+<P>
+<U>
+ About wildcards in 'template':
+</U><BR>
+<P>
+ The wildcards recognized by PARCP in the 'template' parameter are
+ compatible with Unix's grep command and allows such specifications as
+ *75.zip or * (equivelant to *.* in DOS lingo). Expressions such as [a-e]*t
+ would fit the name "apple.crt" or "catspaw.bat" or "elegant".  This allows
+ considerably wider flexibility in file specification.
+<P>
+ In the specified template string:
+<UL>
+<LI> `*' matches any sequence of characters (zero or more)
+<LI> `?' matches any character
+<LI> `\' suppresses syntactic significance of a special character
+<LI> [SET] matches any character in the specified set,
+<LI> [!SET] or [^SET] matches any character not in the specified set.
+</UL>
+<P>
+ A set is composed of characters or ranges; a range looks like 'character
+ hyphen character' (as in 0-9 or A-Z).  [0-9a-zA-Z_] is the minimal set of
+ characters allowed in the [..] template construct. Other characters are
+ allowed (ie. 8 bit characters) if your system will support them (it almost
+ certainly will).
+<P>
+ To suppress the special syntactic significance of any of `[]*?!^-\', and
+ match the character exactly, precede it with a `\'.
+<P>
+<P>
+<U>
+ General rules for all commands:
+</U><BR>
+<P>
+<UL>
+<LI> If the commands begins with the 'L' letter, it's for the Local machine,
+   i.e. for Client. Simple example is the DIR command - DIR lists files
+   from remote machine (i.e. Server), LDIR lists files from local machine
+   (i.e. Client).
+<P>
+<LI> Nearly all commands (GET, PUT, DIR, DEL, MD) act in the current working
+   directory (CWD). The CWD can be changed by the CD command and enquired
+   by the PWD command.
+<P>
+<LI> The path separator in Unix is forward slash ('/') while in TOS/DOS it's
+   the backward slash ('\'). PARCP works with forward slashes internally,
+   but understands the back slashes, too.
+<P>
+<LI> Unix mounts drives under normal directories while TOS/DOS uses the form
+   drive:\path. If you want to change CWD on Server, please remember which
+   operating system runs on it and use the appropriate form of CD parameter.
+<P>
+<LI> The resulting CWD is displayed in unified form /drive/path, which simulates
+   Unix behaviour and is compatible with MiNT/MagiC way of mounting TOS drives
+   under universal drive U:\.
+<P>
+   If you don't understand it, never mind. When PWD says "/d/tools" and Server
+   runs on TOS/MiNT/MagiC, you know the working directory is on drive d: in
+   path \tools\.
+</UL>
+<P>
+<P>
+<U>
+ The list of Client's commands is as follows:
+</U><BR>
+<table width="100%" border=4>
+  <tr><th width="30%">Command <th>Parameter
+      <th>Action
+  <tr><td><STRONG>QUIT <td>
+      <td>             quit both Client and Server. Since PARCP Client
+                       wants to be similar to FTP, you can use command
+                       Bye as an alias for QUIT.
+  <tr><td><STRONG>LQUIT <td>
+      <td>             quit only Client. Server will wait for another
+                       Client session.
+  <tr><td><STRONG>EXIT  <td>
+      <td>             exit back to ParShell, if we came to CLI from it.
+  <tr><td><STRONG>PUT   <td>template
+      <td>             send files matching template from Client to Server.
+                       If SUBD is OFF, PUT sends just files matching
+                       template, subdirectories are skipped. If SUBD is ON,
+                       PUT sends all files and directories matching
+  <tr><td><STRONG>GET  <td>template
+      <td>             receive files matching template from Server to
+                       Client. See the PUT command details for SUBD
+                       description.
+  <tr><td><STRONG>PUTDEL<BR>GETDEL <td>
+      <td>             commands do the same as PUT and DEL command
+                       respectively, but successfuly copied files are
+                       deleted afterwards. It is similar to MOVE function
+                       in ParShell (and MOVE command in DOS, or mv in Linux)
+  <tr><td><STRONG>DIR  <td>[-switch] [template]
+      <td>             display list of files matching the template in current
+                       directory on Server. If you omit the template DIR will
+                       list all files. The alias for DIR is ls.<BR>
+                       You can specify several switches:<BR>
+                       <STRONG>-f</STRONG> for listing files only<BR>
+                       <STRONG>-d</STRONG> for listing directories only<BR>
+                       <STRONG>-n</STRONG> for listing files/dirs NOT matching the template<BR>
+                       You can combine the switches (e.g. -fn)
+  <tr><td><STRONG>LDIR <td>[-switch] [template]
+      <td>             display list of files matching the template in current
+                       directory on Client. If you omit the template LDIR
+                       will list all files. Alias for LDIR is lls. The switches are same as for
+                       DIR (see above).
+  <tr><td><STRONG>DEL  <td>template
+      <td>             delete files matching template on Server. If SUBD is
+                       OFF DEL deletes just files matching template. If
+                       SUBD is ON DEL deletes also directories. Alias is
+                       rm.
+  <tr><td><STRONG>LDEL <td>template
+      <td>             delete files matching template on Client. See the
+                       DEL command above for SUBD description. Alias is
+                       lrm.
+  <tr><td><STRONG>EXEC <td>[-n] program [parameters] <td>
+      <td>             executes any program on the PARCP Server and pass in the optional parameters (on its command line).
+                       The optional -n parameter disables Client waiting for finishing of the program execution on Server.
+  <tr><td><STRONG>LEXEC <td>program [parameters] <td>
+      <td>             executes any program on the Client and pass in the optional parameters.
+
+  <tr><td><STRONG>SHOWTIME <td>
+      <td>             display current date and time on both Client and Server
+
+  <tr><td><STRONG>GETTIME <td>
+      <td>             get current date and time from Server and set it on Client. In other
+                       words - synchronize Client's time with Server
+
+  <tr><td><STRONG>PUTTIME <td>
+      <td>             get current date and time from Client and set it on Server. In other
+                       words - synchronize Server's time with Client
+
+  <tr><td><STRONG>REN  <td>filename
+      <td>             rename file on Server. REN prompts for new filename.
+  <tr><td><STRONG>LREN <td>filename
+      <td>             rename file on Client. Similar to REN.
+  <tr><td><STRONG>CD   <td>dir
+      <td>             change directory on Server
+  <tr><td><STRONG>LCD  <td>dir
+      <td>             change directory on Client
+  <tr><td><STRONG>MD   <td>dir
+      <td>             make directory on Server (alias is mkdir)
+  <tr><td><STRONG>LMD  <td>dir
+      <td>             make directory on Client (alias is lmkdir)
+  <tr><td><STRONG>PWD  <td>
+      <td>             prints current working directory on Server
+  <tr><td><STRONG>LPWD <td>
+      <td>             prints current local working directory on Client
+  <tr><td><STRONG>DRV  <td>
+      <td>             display logical drives on Server
+  <tr><td><STRONG>LDRV <td>
+      <td>             display logical drives on Client
+  <tr><td><STRONG>HASH <td>[ON/OFF]
+      <td>             When HASH is On, PARCP displays hash marks (dots :)
+                       by every transferred block.
+                       When HASH if Off, the transfer progress is displayed
+                       by percentage of the length of transferred file.
+  <tr><td><STRONG>CASE <td>[ON/OFF]
+      <td>             This switch affects the filename matching on filename
+                       case sensitive filesystems (minix, ext2). E.g. there are
+                       files "Hello" and "HELL". With CASE ON you say 'DIR He*'
+                       and only "Hello" is listed, while with CASE OFF the HELL
+                       matches the "He*" pattern as well.
+  <P>
+                       Please note this switch does not affect VFAT/NTFS filesystems
+                       because these are not case sensitive.
+  <tr><td><STRONG>DOSCASE <td>[ON/OFF]
+      <td>             When DOSCASE is Off, all files on DOS filesystem are
+                       listed in lower case. This is just pure cosmetic.
+  <tr><td><STRONG>HIDDEN <td>[ON/OFF]
+      <td>             When HIDDEN is On, PARCP displays and process also
+                       files with attributes HIDDEN and SYSTEM. This
+                       applies to files on MS-DOS filesystem only.
+                       HIDDEN is Off by default, i.e. hidden files are not
+                       listed nor processed.
+  <tr><td><STRONG>SUBD <td>[ON/OFF]
+      <td>             SUBD switch affects PUT, GET, DEL and LDEL commands.
+                       When SUBD is On, PUT and GET transfers also all
+                       matching directories and its files. DEL and LDEL
+                       deletes also matching directories. When SUBD is OFF,
+                       the commands will transfer or delete just files and
+                       not directories.
+  <tr><td><STRONG>KEEP <td>[ON/OFF]
+      <td>             KEEP On means that timestamp of copied files (date and
+                       time of file creation) will be preserved. When KEEP
+                       is OFF, the timestamp of copied files are set to the
+                       actual time of copying of those files.
+  <tr><td><STRONG>ATTRIB <td>[ON/OFF]
+      <td>             ATTRIB On will cause the copied files to have
+                       preserved the file attributes (on TOS and DOS
+                       filesystem there are five attributes: READ ONLY,
+                       HIDDEN, SYSTEM, VOLUME and ARCHIVE) and also
+                       access rights (on Minix and ext2 filesystems
+                       the user, group and other have different read,
+                       write and execute rights).
+                       ATTRIB is Off by default.
+
+  <tr><td><STRONG>ARCHIVE <td>[ON/OFF]
+      <td>             In Archive mode PARCP copies only files with Archive
+                       bit set and this bit is then cleared. Purpose: easy backups.
+
+  <tr><td><STRONG>CRC  <td>[ON/OFF]
+      <td>             When the CRC is ON, PARCP computes a 32-bit Cyclic
+                       Redundant Checksum of every copied block for 100%
+                       safety of the data transfer. It's disabled by
+                       default, since it slows the transfer down a little
+                       and generally the transfer goes well without any
+                       communication errors. But it's theoretically
+                       possible to get a damaged file after copying (if the
+                       data are lost in the parallel cable), so the CRC
+                       directive is here for the absolute safety - when
+                       enabled, it will force resending any damaged block
+                       up to three times. If a block is sent four times and
+                       is always damaged, the transfer is aborted.
+  <tr><td><STRONG>PGLEN <td>[number]
+      <td>             PGLEN sets the length of view page for DIR command.
+                       PARCP is very smart in determining the size of screen
+                       (it checks the TIOCGWINSZ and environment variable
+                       "LINES") so you shouldn't need the PGLEN command.
+                       If you would like to change the length of view page,
+                       anyway, do it anytime by PGLEN. With PGLEN 0 the DIR
+                       listing never stops.
+  <tr><td><STRONG>SORT <td>[NnSsDdU]
+      <td>             SORT changes the attribute the dir listing is sorted
+                       by. You always specify only one character from the
+                       listed. Possible values are <BR>
+                  <UL>
+                  <LI> N ..... file name (alphabetically from 'a' to 'z') <BR>
+                  <LI> E ..... file extension (the part after the last dot
+                               in filename, alphabetically) <BR>
+                  <LI> D ..... date and time stamp of file (newer to older) <BR>
+                  <LI> S ..... file size (from smaller to bigger) <BR>
+                  <LI> U ..... unsorted (i.e. the physical directory order) <BR>
+                  </UL> <BR>
+                       If you use the lower case of the values above (i.e.
+                       n, e, d or s), you get the sorting reversed (i.e.
+                       from 'z' to 'a', or from older files to newer, or
+                       from bigger to smaller ones).
+  <tr><td><STRONG>SORTCASE <td>[ON/OFF]
+      <td>             When SORTCASE is ON the upper case filenames are sorted before
+                       the lowecase ones (in case you sort by filename).
+  <tr><td><STRONG>OVEROLD <td>[SRA]
+      <td>             this switch (together with OVERNEW) supersedes the
+                       old OVER switch. If PARCP while copying a file
+                       detects that a file with same name already exists in
+                       the destination dir, it checks if the existing file
+                       is older or newer than the file being copied. If
+                       both files have the same time and date stamp, the
+                       shorter is considered to be older (helps when a file
+                       was not copied completely).
+<P>
+                       OVEROLD can hold three different values:
+                  <UL>
+                  <LI> S ..... Skip the copied file
+                  <LI> R ..... Replace the existing file
+                  <LI> A ..... Ask for user's decision
+                  </UL>
+  <tr><td><STRONG>OVERNEW <td>[SRA]
+      <td>             similar to OVEROLD, but for situation where the
+                       destination file is newer than the copied file.
+  <tr><td><STRONG>STAT <td>
+      <td>             just diplays current settings of switches
+  <tr><td><STRONG>SAVE <td>
+      <td>             saves current settings into PARCP configuration
+                       file. Please note that comments on updated lines
+                       will be deleted.
+</table>
+
+<H3><BR><A NAME="Concept5"></A>   3.2.5 ParShell
+</H3>
+<P>
+ParShell is the new, fullscreen user interface of PARCP 3. It was created
+for people not familiar with CLI and FTP commands. You need not to learn
+anything in order to use ParShell - first, there are many programs very
+similar or identical in ParShell look, and second, the ParShell is very
+intuitive even for somebody who never seen Norton Commander in action. Just
+press arrow keys, maybe F1 for a short help and that's all. The main
+functions are mapped on function keys and are listed at bottom of screen -
+so what else you need to know?
+<P>
+Basically, ParShell opens two windows on the screen: left window with
+Client's and right window with Server's directory listing. You can browse
+through the files with Up and Down arrow keys (for faster movement the
+PageUp, PageDown, Home and End keys are also supported). You can also
+switch between Client and Server window by pressing the TAB key.
+<P>
+You can also select some files by pressing the Insert key (unselecting is
+done by Insert key as well, there are also the plus, minus and asterix keys
+on the numeric keypad for faster selecting all files).
+<P>
+When you start a function by F-key press, it acts on the actual file - i.e.
+on the file under the cursor. However Copying (F5), Moving (F6) and
+Deleting (F8) act differently - if there are some files selected, they are
+all copied, moved or deleted. Though if there are no selected files, F5, F6
+and F8 affect the actual file (under cursor) as expected.
+<P>
+Complete list of ParShell recognized keypresses:
+<P>
+<U>
+  Navigation:
+</U><BR>
+<table width="100%" border=4>
+  <tr><th width="30%">Pressed key
+      <th>Action
+  <tr><td><STRONG>Enter/Return </STRONG>
+      <td>if cursor is on
+           a directory (see the <STRONG>DIR</STRONG>), change the current
+           directory (listed at top of window) to that. If the name of
+           directory is '..' (usually the very first item in file list),
+           this is the parent directory and pressign Enter on it will bring
+           you one step up in the directory tree.
+  <tr><td><STRONG>ArrowUp </STRONG>
+      <td>move one line up
+  <tr><td><STRONG>ArrowDown </STRONG>
+      <td>move one line down
+  <tr><td><STRONG>ArrowLeft  </STRONG>
+      <td>goes up in directory tree
+  <tr><td><STRONG>ArowRight  </STRONG>
+      <td>goes into a folder (just like Enter)
+  <tr><td><STRONG>PageUp   </STRONG>
+      <td>move one page up (on Atari press Shift+ArrowUp)
+  <tr><td><STRONG>PageDn   </STRONG>
+      <td>move one page down (on Atari press Shift+ArrowDown)
+  <tr><td><STRONG>Home     </STRONG>
+      <td>move to the top of file list (on Atari press ClrHome)
+  <tr><td><STRONG>End      </STRONG>
+      <td>move to the bottom of file list
+  <tr><td><STRONG>PadSlash<BR>(the '/' key on numeric keypad) </STRONG>
+      <td>show list of logical disks
+  <tr><td><STRONG>Autolocator (any alpha char or number) </STRONG>
+      <td>simply type characters (lowercase!). You can clear the autolocator mask (so you start searching for another filename) by pressing <STRONG>Backspace</STRONG>.
+</table>
+<P>
+<U>
+  Selecting of items:
+</U><BR>
+<table width="100%" border=4>
+  <tr><th width="30%">Pressed key
+      <th>Action
+  <tr><td><STRONG>Insert or SpaceBar</STRONG>
+      <td>select current file (if already selected then unselect)
+  <tr><td><STRONG>PadPlus<BR>the '+' key on numeric keypad </STRONG>
+      <td>select all files
+  <tr><td><STRONG>PadMinus<BR>the '-' key on numeric keypad </STRONG>
+      <td>unselect all files
+  <tr><td><STRONG>PadStar<BR>the '*' key on numeric keypad </STRONG>
+      <td>toggle un/selected files
+  <tr><td><STRONG>Autoselector </STRONG>
+      <td>start typing characters (first one must be uppercase). For deleting the autolocator mask press the Backspace key.
+</table>
+<P>
+<U>
+  Functions:
+</U><BR>
+<table width="100%" border=4>
+  <tr><th width="30%">Pressed key
+      <th>Action
+  <tr><td><STRONG> F1       </STRONG>
+      <td>shows brief help
+  <tr><td><STRONG> F2       </STRONG>
+      <td>switch to PARCP CLI (you can get back by the EXIT command)
+  <tr><td><STRONG> F3       </STRONG>
+      <td>view a text file
+  <tr><td><STRONG> F4       </STRONG>
+      <td>edit a text file
+  <tr><td><STRONG> F5       </STRONG>
+      <td>copy actual file (or all selected files) to the other window
+  <tr><td><STRONG> F6       </STRONG>
+      <td>move actual file (or all selected files) - move means first copy the file, then delete
+  <tr><td><STRONG> F7       </STRONG>
+      <td>create directory (it asks for the name of new directory)
+  <tr><td><STRONG> F8<BR>Delete  </STRONG>
+      <td>delete actual file (or all selected)
+  <tr><td><STRONG> F9       </STRONG>
+      <td>invokes pop-up menu with other options
+  <tr><td><STRONG> F10      </STRONG>
+      <td>does LQUIT, i.e. quits PARCP Client, but not Server
+  <tr><td><STRONG> F20 (F20 = Shift+F10)     </STRONG>
+      <td>does QUIT, i.e. both Client and Server end
+  <tr><td><STRONG> Ctrl-R   </STRONG>
+      <td>refresh file list in the windows
+  <tr><td><STRONG> Esc   </STRONG>
+      <td>stop file copying, moving or deleting
+</table>
+<P>
+ParShell also uses two standard user interaction dialog boxes: MessageBox
+and EditBox.
+<P>
+  In MessageBox you are presented with a text and several (one to three)
+  buttons - you can navigate with Arrow keys (Left and Right) and Tab key
+  between them. After choosing the right button you end the MessageBox by
+  pressing Enter (or Return) key. You can also directly press a key with
+  the first letter of button (for example press 'Y' key for the 'Yes'
+  button). If there's a Cancel button, you can use the Esc key for choosing
+  that.
+<P>
+  In EditBox you get some text and an edit line with blinking cursor: you
+  can navigate in the edit line with Arrow keys (Left and Right) as well as
+  with Home and End keys. You can also press Ctrl-Y (or Ctrl-X) for
+  deleting whole edit line. You end the editting with Enter (or Return)
+  key. If you want to discard changes, press Esc or Undo keys. At any time
+  you can also press the F1 key for brief help.
+<P>
+<P>
+
+
+<H2><BR><A NAME="Installation3"></A> 3.3 State of parallel port
+</H2>
+<P>
+ Please note: you can easily skip the following section if you're going to
+              use LapLink cable with PARCP or the PARCP-USB adapter.
+<P>
+ Standard parallel port is set to output state (all data lines are set for
+ output) by default. It's dangerous to connect two parallel ports together
+ with the PARCP cable when both ports are in output states. That's why I
+ included the program PAR_IN into the PARCP distribution.
+<P>
+ When you run PAR_IN, it reads PARCP configuration file (to find out which
+ parallel port you're going to use) and sets the parallel port into INput
+ state. When one or both ports are in input states, it's OK to connect them
+ by PARCP cable (even when the computers are turned on).
+<P>
+ When PARCP quits it lets the parallel port in input state (that's
+ a must, otherwise your ports might be damaged). So after running PAR_IN
+ or PARCP itself the port is in input state and everything is fine (you can
+ disconnect/reconnect PARCP cable, or just let it be).
+<P>
+ However after rebooting of your computer (by reset, shutdown or power
+ off/on) the parallel port is set to output state again. That means: if you
+ will use PARCP regularly and have the PARCP cable connected all the time,
+ you should put the PAR_IN program into auto start sequence of your
+ operating system to ensure that the parallel port is switched to safe
+ INput state as soon as possible after power on (or reset).
+<P>
+ I.e.: on ATARI put the PAR_IN.PRG into your \AUTO folder on boot drive. On
+ MS-DOS, put a line "PAR_IN.EXE" into your AUTOEXEC.BAT file. In Windows95
+ put the PAR_IN.EXE into the StartUp folder.
+<P>
+ If you decide to stop PARCPing and start printing, you should:
+<P>
+<OL>
+ <LI> remove PARCP cable
+ <LI> turn off computer
+ <LI> connect printer cable
+ <LI> turn on computer
+</OL>
+<P>
+ This is the only suggested method of cables reconnecting (because it is
+ strongly prohibited to connect printer cable to running computer).
+<P>
+<P>
+
+
+<H2><BR><A NAME="Installation4"></A> 3.4 Before running it...
+</H2>
+<P>
+<U>
+   Hardware
+</U><BR>
+<P>
+Please note that on Atari computers there is no hardware configuration of
+PARCP. Atari users can skip this section.
+<P>
+On PC you must configure PARCP for the actual hardware setup. Start
+PARCPCFG, it will show you how many parallel ports you have installed.
+Choose on of them by pressing number 1, 2 or 3. PARCPCFG automatically
+checks the type of chosen parallel port and then asks you for the parallel
+cable type - you can choose between PARCP cable and LapLink cable. At last
+PARCPCFG asks you if it can update PARCP configuration file - Yes is the
+right answer.
+<P>
+If the parallel port was detected as unidirectional, and you would like to
+connect your PC with Atari computer, you would have to build and use
+UNI-BI adapter - though if you are going to connect your computer with
+other PC machines only, you can use LapLink cable thus need not to
+build the UNI-BI adapter.
+<P>
+Generally speaking it's better to use PARCP cable for its higher troughput.
+LapLink cables are, on the other hand, absolutely safe (you need not to use
+PAR_IN). Anyway, if your port is detected as unidirectional and you have
+more parallel ports, try another one, it might be bidirectional. If not,
+you can always get a cheap (probably second-hand) ISA card with additional,
+hopefully bidirectional parallel port.
+<P>
+Before connecting the cable please make sure the computers are on the same
+electrical ground otherwise you will get a nice fire in cable and parallel
+ports (You have been warned!). Putting both computers' power cables to the
+same power outlet is always a good idea.
+<P>
+<U>
+   Software
+</U><BR>
+<P>
+PARCP is configured through a normal ASCII file named "PARCP.CFG" by
+default. You can edit it with any plain text editor to change the values
+written there.
+<P>
+If PARCP is started and there's no PARCP.CFG file, it's created with the
+default values. The default values are mostly OK, however on PC you are
+strongly encouraged to start PARCPCFG first in order to generate (or
+update) PARCP.CFG for the current hardware setup (look at the Hardware
+specific section in chapter 4.1.1).
+<P>
+<P>
+
+
+<H2><BR><A NAME="Installation5"></A> 3.5 PAR_IN, PARCPCFG (PC only)
+</H2>
+<P>
+Both programs in PC version read the PARCP configuration file at startup
+in order to find out which parallel port you use for PARCP and how to
+program it.
+<P>
+All three programs will accept one command line parameter - a filename of
+alternate PARCP configuration file. If there is no command line parameter,
+PARCP.CFG is searched (according all those rules - first PARCPDIR, then
+home dir and at last actual dir).
+<P>
+Please note that in PARCP you set the alternate config file with '-f'
+switch, though PAR_IN and PARCPCFG take directly the first parameter as the
+alternate config file.
+<P>
+Example:
+<P>
+<table width="100%" border=4>
+<tr><th width="30%">Command <th>What happens
+<tr><td><PRE GRAPHIC>PARCPCFG c:\port2.cfg </PRE>
+    <td>it creates or updates configuration file named port2.cfg
+<tr><td><PRE GRAPHIC>PAR_IN c:\port2.cfg </PRE>
+    <td>this turns the parallel port to input state
+<tr><td><PRE GRAPHIC>PARCP -f c:\port2.cfg </PRE>
+    <td>and this finally starts the PARCP with the right config file
+</table>
+
+<H1><BR><A NAME="Configuration"></A>4. Configuration
+</H1>
+<P>
+The configuration of PARCP is done by editing PARCP.CFG file (it's a plain
+ASCII text file). PARCP reads it at startup. It searchs for the PARCP.CFG
+at several places:
+<P>
+<UL>
+  <LI> if there's <STRONG>-f</STRONG> parameter followed by a filename on command line of
+    PARCP, the filename is used as the configuration file for PARCP. There
+    are no restrictions on the filename of configuration file - so you can
+    have several favourite configurations predefined and choose between
+    them when starting PARCP (example: <STRONG> PARCP -f C:\PARCP\config\port2.cfg </STRONG>)
+<P>
+  <LI> PARCP looks for PARCP.CFG where the environment variable <STRONG>PARCPDIR</STRONG>
+    points to (example: <STRONG>PARCPDIR=C:\PARCP\config</STRONG>, PARCP searchs for
+    <STRONG>C:\PARCP\config\parcp.cfg</STRONG>)
+<P>
+  <LI> if it fails, PARCP searches for PARCP.CFG in the directory where it was started
+    from
+<P>
+  <LI> if still no PARCP.CFG found then it tries to locate it in the current path
+<P>
+  <LI> and at last it tries to seach for PARCP.CFG in user's HOME folder ($HOME on Linux, %HOMEDATA% on Windows)
+</UL>
+<P>
+When it finds a valid PARCP.CFG, it will load it. If, however, it doesn't
+find the PARCP.CFG file, it will create one in current directory and save
+there the default values (handy in case you need to start editing the
+PARCP.CFG from scratch).
+<P>
+<P>
+
+
+<H2><BR><A NAME="Configuration1"></A> 4.1 PARCP.CFG directives reference
+</H2>
+<P>
+all tabs, spaces and texts after ';' and '#' up to end of line are ignored.
+For boolean variables use either TRUE|FALSE or YES|NO - both answers are
+permitted.
+<P>
+<H3><BR><A NAME="CFGDirective1"></A>    4.1.1 PC Hardware specific Section
+</H3>
+<P>
+    Please do not edit this section by hand unless you know what you're
+    doing. PARCPCFG is able to fill these values for you in comfortable way
+    - you just answer two questions, the rest PARCPCFG figures out itself.
+<P>
+<table width="100%" border=4>
+  <tr><th width="30%">Command <th>Parameter
+      <th>Meaning
+  <tr><td><STRONG>Port      <td>= <EM>addr</EM>
+      <td>                  base address of parallel port (in hex!).
+                            The default address is 378 (LPT1), other usual
+                            addresses are 278 (LPT2) and 3bc (LPT3).
+  <tr><td><STRONG>UNI-BI    <td>= [yes|no]
+      <td>                  if YES, PARCP will use routines for UNI-BI HW
+                            adapter. Default is NO.
+  <tr><td><STRONG>PortType  <td>= <EM>number</EM>
+      <td>       <UL> <LI>  0 = unidirectional port
+                      <LI>  1 = bidirectional or EPP port (default)
+                      <LI>  2 = ECP port, needs reprogramming to EPP
+                 </UL>
+  <tr><td><STRONG>CableType <td>= <EM>number</EM>
+      <td>       <UL> <LI>  1 = PARCP cable (default)
+                      <LI>  0 = LapLink cable
+                 </UL>
+</table>
+<P>
+<P>
+<H3><BR><A NAME="CFGDirective2"></A>    4.1.2 General Section
+</H3>
+<P>
+    This section contains state of several switches (namely SUBD, CASE,
+    HIDDEN, OVEROLD, OVERNEW, KEEP, ATTRIB, HASH and CRC). Please look at
+    detailed description of these switches to the section 3.2.4).
+<P>
+
+<table width="100%" border=4>
+  <tr><th width="30%">Command <th>Parameter
+      <th>Meaning
+  <tr><td><STRONG>FastRoutines   <td>= [yes|no]
+      <td>                  if YES, PARCP will use fast assembler routines
+                            for communication. The default is YES. Use NO
+                            only if you have encountered problems with PARCP
+                            communication.
+  <tr><td><STRONG>ProcessSubDir  <td>= [yes|no]
+      <td>                  indicates whether to send also subdirectories.
+                            Default is YES.
+  <tr><td><STRONG>CaseSensitive  <td>= [yes|no]
+      <td>                  if NO, upper and lower cases in filenames are
+                            considered to be the same. Default is YES.
+                            This option is evaluated on case-sensitive filesystems only.
+                            Please note neither VFAT nor NTFS are case-sensitive fs.
+  <tr><td><STRONG>PreserveCase  <td>= [yes|no]
+      <td>                  if NO, all DOS filenames are listed in lower case.
+                            Default is YES.
+  <tr><td><STRONG>ShowHidden     <td>= [yes|no]
+      <td>                  if NO, hidden and other system files on MS-DOS
+                            filesystems are not listed and thus not copied
+                            nor deleted.
+  <tr><td><STRONG>OverOlder      <td>= [SRA]
+      <td>                  what to do if a file with same name already
+                            exists. [S]kip, [R]eplace or [A]sk user?
+                            For details please look at the OVEROLD CLI
+                            command discussion in section 3.2.4
+  <tr><td><STRONG>OverNewer      <td>= [SRA]
+      <td>                  similar to OverOlder above. Again please see
+                            the section 3.2.4
+  <tr><td><STRONG>KeepTimeStamp  <td>= [yes|no]
+      <td>                  if YES, copied files will have the same date
+                            and time of creation as have the original files.
+                            Default is YES.
+  <tr><td><STRONG>KeepAttribs    <td>= [yes|no]
+      <td>                  if YES, copied files will have the same MS-DOS
+                            attributes (ReadOnly, Hidden, System, Volume
+                            and Archive) or Unix user/group/other
+                            read/write/exec permissions (depends on
+                            Client's and Server's filesystem).
+  <tr><td><STRONG>ArchiveMode    <td>= [yes|no]
+      <td>                  if YES, only files with Archive bit set will be copied.
+  <tr><td><STRONG>CollectInfo    <td>= [yes|no]
+      <td>                  if YES, you'll get nice Progress bars
+  <tr><td><STRONG>HashMark       <td>= [yes|no]
+      <td>                  if YES, PARCP will display a hash mark ('.')
+                            every transferred block.
+                            if NO, PARCP will display the progress
+                            in percentage of length of transferred file.
+  <tr><td><STRONG>QuitAfterDrop  <td>= [yes|no]
+      <td>                  if YES, Server will exit after receiving
+                            drag &amp; dropped files. That's handy for single
+                            file copying - just run the Server (usually by
+                            a hotkey) and drop a file onto Client's icon...
+  <tr><td><STRONG>CRC            <td>= [yes|no]
+      <td>                  if YES, PARCP will copy files with 105% safety
+  <tr><td><STRONG>BlockSize      <td>= <EM>number</EM>
+      <td>                  length of transferred block in Kilobytes - the
+                            longer block, the faster transfer but the less
+                            often the screen gets updated with progress
+  <tr><td><STRONG>DirectoryLines <td>= <EM>number</EM>
+      <td>                  number of lines for directory buffer
+                            one line in directory buffer takes 128 bytes of
+                            memory. If a directory has more items than is
+                            the number of DirectoryLines, the rest of items
+                            will not be shown! So put here a good number
+                            (default is 256).
+  <tr><td><STRONG>FileBuffers    <td>= <EM>number</EM>
+      <td>                  the number of buffers (one buffer is BlockSize
+                            big) for additional file buffering. Default
+                            value is 1 (one file buffer). Try to increase
+                            this value for better performance.
+  <tr><td><STRONG>Timeout        <td>= <EM>number</EM>
+      <td>                  the timeout value in seconds. The default value
+                            (10 seconds) should be enough, but increasing
+                            this value might help when the response time
+                            from Server is too long and Client quits with
+                            "Timeout" during DIR or GET commands.
+  <tr><td><STRONG>DirSort        <td>= <EM>char</EM>
+      <td>                  sorting rule. See the SORT command discussion
+                            in section 3.2.4, please.
+  <tr><td><STRONG>SortCase       <td>== [yes|no]
+      <td>                  sort upper case before lower case in filenames.
+                            Default is NO.
+  <tr><td><STRONG>Autoexec       <td>= <EM>file</EM>
+      <td>                  name of script file (file with PARCP CLI
+                            commands). If the file is found, all commands
+                            are executed before the PARCP user interface is
+                            started (details in section 4.4).
+  <tr><td><STRONG>Shell          <td>= [yes|no]
+      <td>                  if yes, ParShell is started - otherwise use the
+                            PARCP CLI.
+</table>
+
+
+<H3><BR><A NAME="CFGDirective3"></A>    4.1.3 Debug Section
+</H3>
+<P>
+This is only useful for beta-testers and those who want to examine PARCP's
+behavior, trace internal routines, remember transferred files...
+You need to have a "debug" distribution of PARCP for this.
+<P>
+<table width="100%" border=4>
+  <tr><th width="30%">Command <th>Parameter
+      <th>Meaning
+  <tr><td>Debug          <td>= <EM>n</EM>
+      <td>debug level
+  <tr><td>LogFile        <td>= <EM>file</EM>
+      <td>name of logfile, where all the informations are written into.
+  <tr><td>NoLog          <td>= <EM>string</EM>
+      <td>string of characters
+  <tr><td>NoDisplay      <td>= <EM>string</EM>
+      <td>string of characters
+</table>
+
+
+<H3><BR><A NAME="CFGDirective4"></A>    4.1.4 ParShell Section
+</H3>
+<P>
+ Please note that this section got its own header in PARCP.CFG: [PARSHELL]
+<P>
+<table width="100%" border=4>
+  <tr><th width="30%">Command <th>Parameter
+      <th>Meaning
+  <tr><td>ANSIfont       <td>= [yes|no]
+      <td>                  Atari specific directive - it enables the ANSI
+                            semigraphics characters for drawing ParShell
+                            interface. It looks better than the '+-|#',
+                            though an ANSI font has to be loaded first.
+                            For PC it's not needed, the VGA character set
+                            contains semigraphics characters by default
+                            thus are always used in PC PARCP..
+                            This directive is set to No by default.
+  <tr><td>UseColors      <td>= [yes|no]
+      <td>                  PARCP's native colors are white on blue, just
+                            like Norton Commander. Though you can have it
+                            white on black (or black on white :-), just say
+                            UseColors = No
+  <tr><td>UseMarks       <td>= [yes|no]
+      <td>                  the selected files are highlighted or have
+                            different color. ParShell can also put '*' in
+                            front of selected files - when UseMarks is Yes.
+                            UseMarks is enabled automatically when the
+                            current screen does not support colors nor bold
+                            mode.
+  <tr><td>SmoothScroll   <td>= [yes|no]
+      <td>                  just type of scrolling - smooth or jumping. Try
+                            to set SmoothScroll to No when the scrolling is
+                            too slow for you (most probably for Atari or
+                            terminal users).
+  <tr><td>ShowSize       <td>= [yes|no]
+      <td>                  if yes, size of file is listed
+  <tr><td>ShowDate       <td>= [yes|no]
+      <td>                  if yes, datestamp of file is listed
+  <tr><td>ShowTime       <td>= [yes|no]
+      <td>                  if yes, timestamp of file is listed
+  <tr><td>Viewer         <td>= <EM>file</EM>
+      <td>                  if set, should point to a file viewer. If
+                            unset, ParShell will use its own internal
+                            text viewer for viewing files.
+  <tr><td>Editor         <td>= <EM>file</EM>
+      <td>                  if set, should point to a file editor. If
+                            unset, you can't edit files.
+  <tr><td>TempDir        <td>= <EM>folder</EM>
+      <td>                  should point to a place for temporary files -
+                            ParShell has to make a copy of file for Viewing
+                            or Editting. If unset, you can't view nor edit
+                            files.
+</table>
+
+
+<H3><BR><A NAME="CFGDirective5"></A>    4.1.5 PARCP.CFG example
+</H3>
+<P>
+<PRE GRAPHIC>
+# configuration file for PARCP 4.0
+[PARCP]
+FastRoutines = Yes      # Yes => use fast assembler routines
+ProcessSubDir = Yes     # Yes => send also files in directories
+CaseSensitive = Yes     # Yes => pattern matching on case-sensitive fs is case sensitive
+PreserveCase = Yes      # Yes => show DOS filenames as are stored on disk (upper/lower case)
+ShowHidden = Yes        # Yes => list and process files with Hidden attribute set (DOS fs)
+KeepTimeStamp = Yes     # Yes => keep the time-stamp of copied file
+KeepAttribs = Yes       # Yes => keep the file attributes (ReadOnly, Hidden, System, Volume)
+HashMark = Yes          # Yes => print hash-mark every transferred block
+QuitAfterDrop = Yes     # Yes => quit the Server after receiving drag'n'dropped files
+CRC = No                # Yes => use control checksum for absolute safety of file transfer
+OverOlder = R           # Existing older files: Replace
+OverNewer = A           # Existing newer files: Ask user what to do
+BlockSize = 50          # number = size of block in kilobytes
+DirectoryLines = 200    # number of items in directory listing
+FileBuffers = 1         # number of file buffers (1 filebuffer is BlockSize long)
+Timeout = 10            # number = timeout in seconds
+DirSort = N             # N = directory listing sorted by Names
+SortCase = Yes          # Yes => sort upper case names before lower case
+UserName = User         # your first and last name
+KeyCode = key           # your personal keycode
+Autoexec = auto.txt     # filename = batch file executed after start of PARCP
+Shell = Yes             # Yes => start with fullscreen user interface
+USBSerial = XXXXXXX     # optional identification of PARCP-USB adapter if you have plugged more than one
+<P>
+[PARSHELL]
+UseColors = Yes         # Yes => use colors (white on blue, like Norton Commander)
+UseMarks = No           # Yes => mark selected files with asterix
+SmoothScroll = Yes      # Yes => scroll contents by lines (might be slow on Atari)
+ShowSize = Yes          # Yes => show size of files in directory listing
+ShowDate = Yes          # Yes => show datestamp of files in directory listing
+ShowTime = No           # Yes => show timestamp of files in directory listing
+Viewer =                # filename = external text viewer (empty => use internal viewer)
+Editor =                # filename = external text editor
+TempDir =               # filepath = path to directory for temporary files
+</PRE>
+<P>
+<P>
+
+
+<H2><BR><A NAME="Configuration2"></A> 4.2 Command line parameters
+</H2>
+<P>
+Many command line parameters known from previous versions of PARCP have
+been eliminated thanks to configuration file. The only valid options are:
+<P>
+<table width="100%" border=4>
+<tr><th>Parameter          <th>Action
+<tr><td>-s                 <td>run PARCP as Server
+<tr><td>-f <configfile>    <td>path to alternate configuration file
+<tr><td>-b <batchfile>     <td>filename of script that will be executed
+<tr><td>-c shell/noshell   <td>overrides Shell=Yes/No in the config file
+<tr><td>-c crc/nocrc       <td>overrides CRC=Yes/No in the config file
+<tr><td>-q                 <td>run quietly, display nothing
+</table>
+<P>
+The alternate configuration file can be used for different configuration
+sets. When the entered filename of configuration file is valid, the
+configuration file will have the highest priority and will be used
+instead of other configuration files found elsewhere.
+<P>
+PARCP <U>Server</U> ignores any other parameters on command line.
+<P>
+PARCP <U>Client</U> takes all other words (without the '-' sign) on its command
+line as names of files or directories to be sent to the Server. If your
+environment supports so called `drag &amp; drop', simply put the files or
+directories onto PARCP icon and they will be copied to Server (into the
+current working directory of Server). The Client will exit after sending
+those files. Whether the Server will quit as well or will wait for another
+PARCP session is defined by the directive QuitAfterDrop (see 4.1.2).
+<P>
+<P>
+
+
+<H2><BR><A NAME="Configuration3"></A> 4.3 Configuration under Client
+</H2>
+<P>
+Under PARCP Client CLI you can change values of ProcessSubDir (SUBD),
+CaseSensitive (CASE), Overwritting (OVER), KeepTimeStamp (KEEP), HashMark
+(HASH) and CRC (CRC). All these changes are valid only in the current PARCP
+session, after quitting it the values stay as they are in PARCP.CFG.
+If you would like to keep the current settings, use the SAVE command to
+store your settings into PARCP configuration file.
+<P>
+In ParShell you can change in addition the SmoothScroll option and enter
+paths to External file Viewer, Editor and to Temporary directory. Similarly
+to the CLI case above - if you want to keep the settings, you must Save
+Settings (it's an option in the Pop-up menu - try pressing F9 key).
+<P>
+<P>
+
+
+<H2><BR><A NAME="Configuration4"></A> 4.4 PARCP Script file (batch mode)
+</H2>
+<P>
+PARCP is able to execute script files. This is a very easy method for
+automatizing file transfers and other tasks, without user interaction.
+Script file is just a plain text file with PARCP CLI commands. You can
+prepare several script files and choose the right one with the '-b' option
+on PARCP command line, or with the Autoexec directive of PARCP
+configuration file.
+<P>
+Valid PARCP Script may look like this, for example:
+<P>
+<PRE GRAPHIC>
+OVER
+DEL C:\WINDOWS\TEMP
+MD C:\WINDOWS\TEMP
+CD C:\WINDOWS\TEMP
+LCD D:\BACKUP
+PUT *.ZIP
+QUIT
+</PRE>
+<P>
+As you may see, script is just several Client CLI commands, line by line.
+If it ends with QUIT or LQUIT, PARCP Client ends as well. However if
+there's no [L]QUIT command, the PARCP Client finishes processing of script
+file and continues with normal run up to ParShell (or CLI, depending
+on setup). This way you can, for example, set up your favourite working
+directories with this simple script:
+<P>
+# script for setting up PWD and LPWD
+<PRE GRAPHIC>
+CD C:\SOURCE
+LCD D:\PARCP\SOURCE
+</PRE>
+<P>
+<P>
+
+
+<H1><BR><A NAME="Miscellaneous"></A>5. Miscellaneous
+</H1>
+<P>
+
+
+<H2><BR><A NAME="Miscellaneous1"></A> 5.1 DISCLAIMER:
+</H2>
+<P>
+    The author accepts no liability for any damages to users or to third
+parties, arising in any way out of the use of the PARCP, PARCP cable and
+UNI-BI adapter. USE AT YOUR OWN RISK.
+<P>
+I am always interested in bug reports, however, and any major ones will
+probably get fixed.
+<P>
+<P>
+
+
+<H2><BR><A NAME="Miscellaneous2"></A> 5.2 Hints
+</H2>
+<P>
+<UL>
+<LI> if you use PARCP regularly you most probably won't disconnect the PARCP
+    cable from computers. Then it's important to start PAR_IN on one or
+    both computers after reboot as soon as possible (because every reboot
+    of computer sets its parallel ports to output state which is dangerous
+    for the other computer connected by PARCP cable). That's why I suggest
+    you to put PAR_IN.PRG into your AUTO folder (Atari) or PAR_IN.EXE into
+    AUTOEXEC.BAT (DOS) or StartUp folder (Windows95).
+<P>
+<LI>You can break running file transfer immediately by pressing <STRONG>Shift+Control</STRONG>
+    key combination (under Linux use <STRONG>Ctrl+C</STRONG>. The transferred file will
+    be closed but not deleted so you'll end up with partially copied file.
+</UL>
+<P>
+<P>
+
+
+<H2><BR><A NAME="Miscellaneous3"></A> 5.3 Troubleshooting
+</H2>
+<P>
+ What to do if PARCP does not start properly and ends up with one of the
+ following messages:
+<P>
+<U>
+ on MS-DOS:
+</U>
+<UL>
+ <LI> "not COFF" - this basically means the file PARCP.EXE was corrupted. This
+   is often caused by a virus. Solution is easy - delete PARCP.EXE, kill
+   all viruses on your computer and then unzip the original PARCP.ZIP
+   archive to get fresh and correct PARCP.EXE.
+<P>
+ <LI> "OMPT: file not found" - your PATH environment variable is not set. Type
+   "set PATH=C:\" on your command prompt and the problem should disappear
+   (it's a bug in DJGPP start up code, and should be fixed when DJGPP 2.02
+   gets out).
+</UL>
+<P>
+<U>
+ on Linux:
+</U>
+<UL>
+ <LI> "Segmentation fault (core dumped)" - this message is from Linux and
+   appears when you forget to start PARCP with root privileges. Since PARCP
+   accesses PC hardware directly you must be logged as root under Linux to
+   use PARCP.
+<P>
+ <LI> "Error opening terminal:" - your TERMINFO variable is not set or
+   terminfo database itself is missing. Please get one. On my Debian Linux
+   terminfo database was installed, but I had to put
+   "export TERMINFO=/etc/terminfo" into my /etc/profile script.
+</UL>
+<P>
+<U>
+ After PARCP starts but before connects:
+</U><BR>
+ Some people experience strange connecting problems when try to use PARCP
+ first time. These problems usually resolve and then PARCP runs as they
+ wish. If you get a proper cable and PARCP is configured properly (on PC),
+ you should be able to connect two machines by simple starting server on
+ one machine and then client on the other computer. If an error report
+ appears, please note down the "Debug info:" values and send them to me. I
+ believe we'll solve your connecting problems quickly.
+<P>
+ Several common causes of connecting problems:
+ <UL>
+ <LI> wrong cable
+ <LI> wrong configuration of PC PARCP (wrong parallel port, wrong cable type)
+ <LI> other resident driver of parallel port
+ </UL>
+<P>
+ The last point is important - you should not have installed any special
+ parallel port driver which would confuse PARCP. Very often you have
+ installed drivers for parallel port harddrives, CD-ROMs, ZIP/JAZ or
+ SyQuest removable medias or even network adapters. These drivers have to
+ be disabled or uninstalled when PARCP should run, because they usually
+ confuse PARCP by stealing data off parallel port.
+<P>
+ BTW, for MiNT users: please disable PLIP.XIF! :-)
+<P>
+ This is also a good reason to start trying PARCP from clean DOS or TOS and
+ later (when you're sure cable and software is OK) you'll go into your
+ favourite real operating system.
+<P>
+ If these general hints don't help and PARCP is still unable to connect,
+ please note the values of "Debug info" on both machines and send it to me
+ by e-mail.
+<P>
+<P>
+<U>
+ When PARCP runs, but not reliably:
+</U><BR>
+ If random errors occur in PARCP communications, first of all try to
+ disable FastRoutines (use FastRoutines = No in your PARCP.CFG file).
+ If you're in Windows95/98 try to reboot to clean DOS - Windows sometimes
+ steals characters from parallel port.
+ If communications errors persist please ask me for PARCP DEBUG (special
+ version which documents all activities and problems into log file).
+ Generally you should also use not very long cable (three metres is OK) and
+ the cable should have proper shielding).
+<P>
+<P>
+
+
+<H1><BR><A NAME="Resources"></A>6. Resources &amp; Acknowledgments
+</H1>
+<P>
+
+
+<H2><BR><A NAME="Resources1"></A> 6.1 Related programs
+</H2>
+<P>
+<UL>
+<LI> ST-Trans &copy; Atari 1992 (Atari-Atari only)
+     With simple GEM interface full of bugs and rock-solid but slow
+     routines it's not a competitor for me. However I got inspired by the
+     handshake method used there...
+<P>
+<LI> MiNT-Net (PLIP driver) &copy; Kay Roemer (MiNT-MiNT only)
+     PLIP driver is a modified SLIP driver for parallel port. Can connect
+     two Atari computers running MiNT and MiNT-Net. It's interrupt driven,
+     so it's slower than PARCP. It's a real NET, though.
+<P>
+<LI> HDD_DMN3 &copy; MC Soft &amp; Hard 1997 (Atari-PC only)
+     HDD Daemon is a complete solution for people with Atari ST without
+     harddisk and with an PC computer. HDD_DMN will connect those
+     computers so Atari is able to read PC's harddisk.
+     Interesting piece of software, but a bit complicated for me.
+<P>
+<LI> PC2Am &copy; Michal Kara AKA Lemming (Amiga-PC only)
+     PC <=> Amiga parallel network software. Powerful and fast (100%
+     assembler). Helped me in the beginning with bidirectional parallel
+     ports programming.
+</UL>
+<P>
+<P>
+
+
+<H2><BR><A NAME="Resources2"></A> 6.2 Resources
+</H2>
+<P>
+<U>
+        PARCP Home Site:
+</U><BR>
+<UL>
+  <LI><A HREF="http://joy.sophics.cz/parcp/">http://joy.sophics.cz/parcp/</A> <BR>
+        Official PARCP website. Up-to-date versions, on-line history file.
+</UL>
+
+
+<H2><BR><A NAME="Resources3"></A> 6.3 Getting the PARCP cable
+</H2>
+<P>
+ You can easily get the PARCP cable directly from <A HREF="#Resources5">me</A>. Just send me
+ 8 EUR or 9 USD via PayPal and I'll send you back the 2 metres (6 feets) long PARCP cable.
+ Let me know if you need a longer one.
+<P>
+<P>
+
+
+<H2><BR><A NAME="Resources4"></A> 6.4 GREETINGS
+</H2>
+<P>
+I wish to thank the following persons:
+<P>
+<UL>
+<LI><STRONG>Michal Kara</STRONG>        For the informations about PC parallel port programing
+                   and for complete source code - great inspiration!
+<P>
+<LI><STRONG>Ian D. Gay</STRONG>         For the idea of PARCP Server and Client similar to PARCP
+                   and source code of basic CLIENT/SERVER program
+<P>
+<LI><STRONG>J. Kercheval</STRONG>       For his REGEX Globber
+<P>
+<LI><STRONG>Jeffry J.Brickley</STRONG>  For the idea of configuration file stuff
+                   and source code rev. 1.1.0 (now fixed to rev. 1.6.3 :-)
+<P>
+<LI><STRONG>Raymond T. Kaya</STRONG>    For the CRC algorithm
+<P>
+<LI><STRONG>Lukas Macura</STRONG>       For his HDD_DMN - it used to be a great competitor :-)
+<P>
+<LI><STRONG>Mike De.Petris</STRONG>     For betatesting and useful suggestions
+<P>
+<LI><STRONG>Koos Kuil</STRONG>          For betatesting, bug reporting and for the 1st registration
+<P>
+<LI><STRONG>Ivan Dimbleby</STRONG>      For betatesting and good idea about selling the cable
+<P>
+<LI><STRONG>People behind GNU</STRONG>  For the great GNU C compiler
+<P>
+<LI><STRONG>Frank Naumann</STRONG>      For his GNU C MiNT ports
+<P>
+<LI><STRONG>DJ Delorie</STRONG>         For his DJGPP (GNU C/libc DOS port)
+<P>
+<LI><STRONG>Frederic Gidouin</STRONG>   For his PaCifiST doc file I got an inspiration for
+                   this documentation from.
+</UL>
+
+
+<H2><BR><A NAME="Resources5"></A> 6.5 CONTACTING THE AUTHOR
+</H2>
+<P>
+Feel free to send any bugreports, suggestions, remarks...
+<P>
+<table border=0 cellpadding="4">
+  <tr><td nowrap>E-mail:
+    <td valign="top">
+      <A HREF="mailto:petr@pstehlik.cz"><EM>petr@pstehlik.cz</EM></A> <BR>
+  <tr><td valign="top" nowrap>Snail mail:
+      <td>
+      Petr Stehlik               <BR>
+      Lamanisko 5340             <BR>
+      CZ-76001 Zlin              <BR>
+      Czech Republic             <BR>
+</table>
+</BODY>
+</HTML>
+

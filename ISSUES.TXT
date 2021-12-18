@@ -1,0 +1,45 @@
+Known issues and workarounds.
+
+--------------------------------------------
+Sam & Max:
+--------------------------------------------
+* Game crashes when Conroy starts to perform on stage in Bumpusville.
+  Workaround:
+   Press ESC during the introduction speech that happens when you enter the room.
+   This skips the performance which is causing the crash to happen.
+
+* Inventory screen may still be active, but invisible, after some map reveals.
+  This can be a bit confusion as the game acts differently from what you see on screen.
+  There is no walk cursor available, no inventory icon in the lower left and so on.
+  Workaround:
+   Close that invisible inventory by moving the mouse to an edge of the screen.
+
+* Inventory is sometimes partially overdrawn with background graphics or sprites.
+  This is harmless, but annoying, everything still works as expected though.
+
+* Some minor graphical corruptions and/or sprite flickering can occur in a few scenes.
+  The credits are missing from the intro.
+  The ending outro has many graphical issues.
+
+
+--------------------------------------------
+Day of the Tentacle
+--------------------------------------------
+
+
+--------------------------------------------
+Fate of Atlantis
+--------------------------------------------
+
+
+--------------------------------------------
+Monkey Island 2
+--------------------------------------------
+
+
+--------------------------------------------
+Monkey Island 1
+--------------------------------------------
+
+
+

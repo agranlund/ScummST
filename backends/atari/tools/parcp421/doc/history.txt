@@ -1,0 +1,1468 @@
+This is the history of PARCP development
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+4.2.1 - 2016/02/03
+==================
+- better default config values: sorting by Name, not collecting directory info
+
+- copy/move progress window made nicer when collecting dir info is disabled
+
+- fixed a double-fclose bug introduced few hours ago
+
+
+4.2.0 - 2016/02/03
+==================
+- fixed serious issues when client is on PC, server is on Atari and client
+  copies data to Atari floppy (which is dog slow, like any floppy disk).
+
+- fixed reading of last batch file line if it doesn't end with CR/LF
+  (thanks for reporting to Doug Little)
+
+- configuration file is no longer created if it is not found
+
+- shareware registration code removed altogether
+
+- compiling: proprietary xgen + gst2gcc were replaced by free "vasm"
+
+- documentation got updated to reflect the new freeware status of PARCP
+
+
+4.1.0 - 2015/06/12
+==================
+- use checker board instead of full block for the progress bar
+
+- little changes for Mac OS X support (".DS_Store" files ignored quietly)
+
+- crucial bugfix in PARCP.CFG parsing (gcc crosscompiler for OS X revealed it)
+
+- removed all unregistered version restrictions
+
+
+4.0.0 - 2015/03/31
+==================
+
+- in Quiet mode PARCP does not wait for Enter key press after
+  it exits with an error (say communication timeout).
+  This is to allow truly unattended PARCP usage.
+
+- fatal programming error in parsing configuration file, hidden there
+  for at least 18 years got fixed.
+
+- DOS/Windows now show forward slash as path separator, just like
+  Atari/Linux.
+
+- crucial bug fix in my own curses "pull down menu" implementation.
+  Previously it was freeing memory incorrectly and that often resulted
+  in a crash on exiting PARCP.
+
+- logical drives with medias inserted are no longer hidden by PARCP.
+  So now you can see A: and other previously invisible drives even
+  if no floppy/SD card/CD/DVD is inserted. This allows you to insert
+  the media later and access it in PARCP easily.
+
+- fixed an old bug where computing of remaining time could result
+  in a crash due to dividing by zero.
+
+- worked around error "Windows - No Disk" (apparently regarding floppy).
+
+- five absolutely critical bug fixes to 64bit file lengths support.
+  Previously files longer than 2 GB caused mess in the ParShell
+  and total files length was cut under 2 GB as well.
+
+- EXEC/LEXEC commands implemented. Allows for running arbitrary
+  programs on either end.
+
+- crucial fix for Windows where PDCurses freezed when entering CLI
+  mode from ParShell.
+
+- crucial fix for DOS and Windows where paging in CLI invoked from
+  ParShell didn't work because getch() was overriden by PDCurses.
+
+
+3.97 - 2015/01/12
+=================
+- time sync routines now cope with timezones. GETTIME/SETTIME/SHOWTIME
+  should be fully usable even on modern operating systems.
+
+- non-ASCII characters in filenames are now replaced by question mark
+  when they're displayed in the fullscreen or the FTP-like interface.
+  This was necessary as otherwise characters with accents in various 
+  encodings corrupted the display (mainly the ncurses one).
+  When copying files their filenames are still taken verbatim so beware
+  when you have different character encodings on both ends.
+
+
+3.96 - 2014/12/06
+=================
+- properly fixed the VFAT ghost file names and any other weirdness at last.
+
+- enabled waiting for a keypress if PARCP exits with an error message.
+
+- slightly improved the PARCP Help page in the ParShell (press F1/1).
+
+
+3.95c - 2014/12/03
+==================
+- Warning about possibly incomplete directory listing added. It suggests
+  user to increase the DirectoryLines setting.
+
+- VFAT fake directory entries made invisible on Atari (hi LetDisk! :-).
+
+- HIDDEN flag respected on files under plain TOS.
+
+- ParShell help instructions corrected and improved.
+
+
+3.95b - 2014/11/28
+==================
+- old bug fixed: recursive copying of folders with long file names
+  with destination on 8+3 filesystem. The folder name is now shortened
+  properly.
+
+- Win32 support for Volume Information (filesystem features) added.
+
+- fixed recently introduced bug (in version 3.95) that caused Atari client
+  to send its folder and quit (like if it was drag&dropped).
+
+
+3.95a - 2014/11/26
+==================
+- two crucial waitings before read added. Should fix transfer timeouts
+  on slow STs with large data blocks.
+
+- the output of uname() (operating system name) shortened to not overflow
+  the window width.
+
+- DirectoryLines are increased automatically before saving the PARCP.CFG
+  upon registering. Users should no longer suffer from incorrect setting.
+
+- recently introduced bug in searching for PARCP.CFG also in $HOME fixed.
+
+- recently introduced bug in ParShell form's input field (keys 1, 9, 0
+  not working) fixed.
+
+
+3.95 - 2014/11/23
+=================
+- PARCP.CFG is now searched also in user's home folder.
+
+- found and fixed a serious bug in PARCP protocol that causes timeouts
+  when copying folders to slow computer. Fixed in an inventive hack in
+  order to preserve the protocol revision.
+
+- server prints information about its current configuration loaded from
+  client (Krupkaj's suggestion).
+
+- "crc" / "nocrc" added to the recently added "-c" command line switch.
+
+- default block size lowered to 16 kB (good for plain ST).
+
+
+3.94 - 2014/11/20
+=================
+- ParShell: if function keys are not available (GNOME, Windows, ...)
+  then the numeric keys (plain numbers) works equally well.
+
+- Windows uname (system information) fixed and improved.
+
+- Atari ST52 line wrap enabled.
+
+- two phase command line parameters parsing in order to properly
+  overwrite values from configuration file by command line switches.
+
+- new command line option "-c" with single value for now: "shell"/"noshell".
+  Can override setting read from the PARCP configuration file.
+
+- fixed an old bug in PARCP protocol that appeared when a file could not
+  be opened for reading on server. This is a good reason to upgrade your
+  PARCP, if possible.
+
+- USB "SerialNumber" configuration option added to PARCP.CFG. It allows
+  you to specify which PARCP-USB adapter should be used if there are 
+  several plugged into your computer.
+
+- enormous amount of USB related improvements.
+
+- large effort went into compiling under MinGW. Had to reimplement a bunch
+  of functions that are not in Win32 API. Also had to rename most
+  of ParShell functions as their names conflicted with WinAPI. Weird.
+
+- fixed PARCP key encrypting/decrypting on 64-bit operating systems.
+
+- important bug fix: "DIR" could time-out. Fixed by adding a waiting
+  for other side before reading the output.
+
+- many other minor changes that are too boring to list here
+
+3.93 - 2014/10/14
+=================
+- USB support added to PARCP (for PARCP-USB).
+
+- parallel port assembler routines for MS-DOS removed (not needed
+  on current PCs as they're magnitude faster than a decade ago).
+
+- an important timing fix: clock() returned CPU time spent in process,
+  not the realtime.
+
+- many many changes and fixes in order to compile the project again
+  after 8 years, using a modern compiler.
+
+- project is now in a git repository
+
+
+3.92 - 2006-06-26
+=================
+- progress window moved a bit up to not cover eventual error message box.
+
+- corrected asm clobbered registers in assembler routines for MS-DOS.
+
+
+3.91 - 2006-06-02
+=================
+- ExchangeFeatures protocol extension implemented.
+
+- send_collected_info() for server to show proper progress info.
+
+
+3.90 - 30.05.2002 - getting ready for 64bit file sizes
+=================
+- I noticed that PARCP was 32-bit limited (actually 31-bit :) regarding
+  the total file size so I extended all the key structures and prepared it
+  for transferring more than 2 GB of data (that was the limit of previous
+  versions). Current limits are up to 4 billions of files and up to 2^64
+  bytes of total file size. The single file size is still limited to 32bit
+  number (2 or 4GB) since the underlying OS/libc structures can contain
+  32-bit number only.
+
+- smart algorithm for displaying large file sizes: the number is converted
+  to kB (kilobyte), MB (megabyte) or even GB (gigabyte) for much easier
+  reading of the status messages.
+
+- Jukka Raulamo recently reported wrong percentage printed on the server
+  (e.g. "1789% of total size"). I admit he wasn't alone who reported it
+  but Jukka was the only one who sent a screenshot - so I simply had
+  to fix it :-)
+
+- Gary Salmond had a couple of good ideas that were implemented:
+  + when you press F10 in ParShell by mistake you don't have to quit -
+    the [Cancel] button was added.
+  + SpaceBar could be better used for selecting/unselecting of files.
+    You can still clear out the quick selector by pressing the BackSpace.
+
+
+3.80 - 07.07.2000 - moved to new house so let's get back to programming
+=================
+- Linux source updated for glibc2.1 (CLK_TCK -> CLOCKS_PER_SEC plus moving
+  from clock ticks to seconds because CLOCKS_PER_SEC is 1000000 and thus
+  32-bit variable overflows easily within half of hour!). This could fix
+  potential wrong remaining time estimations.
+
+- getmntent emulation for Atari does not hog whole computer when it checks
+  for the empty floppy drive. Julian Reschke sent me a small routine for
+  suppressing the CEH (Critical Error Handler). This finally gets rid of
+  the annoying "Insert disk into A:"...
+
+- getmntent for Linux has been filled with the right parameters so it
+  started to work correctly and lists all mounted filesystems now.
+
+- routine for converting long filenames to DOS 8+3 convention has been
+  fixed and improved: first, it skips name of drive and colon correctly and
+  second, if there's no dot in the filename ("conversion") then the DOS 3
+  chars extension is used also for the filename ("CONVERSI.ON"). This is
+  similar to what TOS does with long filename.
+
+- ParShell ncurses:
+  - panel free() routines are now called before win free() ones. This fixes
+    several crashes.
+  - all calls to refresh() has been replaced by update_panels() which fixes
+    several other display bugs.
+  - the cursor is now hidden correctly when you go back from CLI to shell.
+
+- dialog boxes default buttons work now (default button for Delete is "No")
+
+- menu routines greatly improved: you can check and uncheck menu items
+  without closing the menu. Also, concept of radio buttons was implemented
+  so e.g. the "Sort by" menu items are radio buttons and you can select
+  just one of them, while the others unselect automatically).
+
+- saving of configuration file is checked for errors now. Thus if you
+  restore PARCP from CD-ROM backup you will get an error report during
+  updating read-only PARCP.CFG now. Thanks for report to Paul Davis.
+
+- files with leading dot in their names (such as ".exrc") are considered to
+  be hidden and are invisible if Show Hidden flag is true. Thanks for this
+  hint to Robert Summers.
+
+- ParShell: confirmation for File Copying, Moving and Deleting. You are no
+  more forced to wait for collecting infos just to click [OK] for copying.
+  Simply turn off confirmation for Copy and it will start copying
+  automatically after the necessary informations for progress bar were
+  collected.
+
+- Sending of empty folders implemented finally. Though this will force you
+  to update both server and client because protocol revision has increased
+  again. I tried to ensure this was the last time, though.
+
+- small workaround for drag&drop added: now the last slash is stripped from
+  the drag&dropped filename so folders are sent as folders, not just their
+  contents
+
+
+3.72 - 03.09.1999
+=================
+- BUGFIX: a memory leak in PARCP Server causing "Fatal error" is fixed.
+  Thanks to Homam for reporting this.
+
+- strings in configuration file might be up to 32k chars long now.
+
+
+3.71 - 16.03.1999
+=================
+- BUGFIX: if newly created dir was out of currently visible dir items the
+  cursor got lost. Fixed. Thanks to Caleb for pointing this out.
+
+- case sensitivity of PARCP has been reworked and two new configurable
+  options were added:
+  "CaseSensitive" - is used in CLI commands like PUT Ab*
+  "SortCase" - in sorting
+  "PreserveCase" - in dir listing on MS-DOS filesystems
+
+- "Set Options" menu of ParShell has been divided into two submenus -
+  "PARCP Config" for configuring PARCP settings and "ParShell Config"
+  for setting up ParShell.
+
+
+3.70 - 07.03.1999 - protocol revision increased! Update both computers!
+=================
+- BUGFIX: there was a little problem in fast assembler routines on PC. The
+  timeouts during copying and some related problems should be gone now.
+
+- BUGFIX: boolean (yes/no) menu items didn't work correctly sometimes. This
+  caused also some uneccessary redraws of items so the seletion was often
+  lost. Fixed.
+
+- BUGFIX: increasing number of directory lines caused memory leak. Fixed.
+
+- BUGFIX: in "Rename? Yes/No/Cancel" the Cancel didn't work properly. Fixed.
+
+- workaround for displaying bottom function keys bar on Atari - hopefully
+  this will solve some problems with redrawing/updating the screen
+  on 18th line.
+
+- estimated remaining time of copy/move operation is displayed now - should
+  be handy for very long copy operations (like CD image 650 MB long). You
+  simply see you have how much time you have for a drink or something else :)
+  The time counter is updated every 3 seconds.
+
+- Fast assembler routines are enabled in unregistered versions of PARCP
+  now. I decided to allow you to enjoy the real top speed PARCP is able to
+  achieve during your four weeks long test period. Hopefully people will
+  still be registering PARCP and will not misuse that.
+
+
+3.63 - 28.02.1999
+=================
+- BUGFIX: when there was more logical drives than allocated directory lines
+  PARCP crashed. Thanks to Oliver Skelton for telling me about this stupid
+  bug.
+
+- BUGFIX: when PARCP client tried to change directory on Atari server into
+  empty removable media (or otherwise illegal directory path) the client
+  crashed. Thanks to Oliver for the bugreport again.
+  This has been fixed properly in the Atari source. It works fine on all
+  removable medias (EZ-cartridges, CD-ROMs) except of floppies - this is
+  still impossible due to some constraints in the Atari OS.
+
+- BUGFIX: PARCP could (and probably often did) crash right after
+  registering. Pity I didn't try to register my copy of PARCP more than
+  once :) Fixed.
+
+- BUGFIX: terrible memory leak in file buffering. File buffering didn't
+  work correctly for block sizes larger than 50 kB. It should work OK now.
+
+- ParShell now allows user to change more parameters online such as
+  FastRoutines, DirectoryLines, BlockSize and also FileBuffers. Now you can
+  watch the speed difference based on various settings more easily.
+
+- added reloading of configuration and also "PARCP Quit" into ParShell menu
+
+- when PARCP handshaking is not successful it displays more informations
+  now (such as 'contact PARCP author' :)
+
+- sorting is now allowed also in the unregistered shareware version of PARCP.
+
+
+3.62 - 02.01.1999 - Happy New Year
+==================================
+
+- IMPORTANT: when copying of files with long names to 8+3 limited filesystems
+  (such as DOS and TOS fs) the long names are shortened now by an intelligent
+  algorithm. This algorithm also takes care of multiple dots or spaces in
+  long filenames. Thanks for the bug report to Hans Galema.
+
+- Autolocator (=automatic searching by typing in Parshell window) works from
+  actual cursor position down and when it reaches the bottom it starts
+  searching from the top again.
+
+- some external viewers and editors couldn't find their RSC or config files -
+  now it should work OK (PARCP changes the current directory to directory where
+  the external program resides before launching it). It's interesting GEM
+  applications could be launched from PARCP which is pure TOS app. Both
+  Everest and qed worked fine here, as well as NOTEPAD and Elvis on
+  Windows.
+
+- editing of files on server works now (file is copied to local TMP directory
+  first, then editor is launched and after editing the file is copied back to
+  server).
+
+- DIR/LS commands of PARCP CLI accept now an additional parameter that narrows
+  the listing to either files only, or folders only, or the searching results
+  are negated (e.g. for DIR *.txt it lists just files NOT ending with .txt)
+  There are three switches: f (files), d (directories) and n (negate
+  template). The switches may be combined together like this:
+
+  DIR -f  ABC*          (list just files their names begin with ABC)
+  DIR -nd *.BAK         (list just dirs NOT ending with .BAK)
+  etc.
+
+
+3.53 - 18.11.1998
+=================
+
+- PARCP config and log files are generated in CR/LF format on TOS/DOS so old
+  editors and viewers can format it correctly. Also the scripts (batch
+  files) are read correctly now regardless of line end (LF vs CF/LF).
+
+
+3.52 - 14.11.1998
+=================
+- Filename case-sensitivity was reworked completely. PARCP now detects the
+  type of filesystem and checks if it is case-sensitive (hint: VFAT is NOT
+  case-sensitive!). Thus now it works more logically and you can use both
+  upper and lower case in names of files residing on FAT/VFAT filesystems.
+
+- ParShell's EditBox can handle long inputs correctly (by scrolling)
+
+- Drag&drop fixed (thanks for all the bugreports to Hans Galema)
+
+- on Atari Shift+Clr/Home works now (that hack from v3.51 was removed)
+
+- several bug reports added (so you should know what command was not
+  recognized etc)
+
+- memory handling in the routine for Collecting informations about
+  directory tree is more efficient now
+
+
+3.51 - 08.11.1998
+=================
+- a few little bugfixes, mostly cosmetic changes
+
+- on Atari in ParShell you can jump to top of list by pressing Clr/Home
+  or using key '7' on numeric pad. To jump down to the latest item
+  use key '1' on numeric pad (reading of Shift+Clr/Home does not work
+  in Ncurses).
+
+
+3.50 - 31.10.1998 - nearly complete rewrite of communication layer
+=================
+- PARCP middle layer was rewritten to be much more robust and error-proof.
+  Now it is possible to detect any file error on Client and Server and
+  report it in a neat dialog box asking user to decide how to react.
+
+  Many bugs and weak places of old code were removed. Several missing
+  things have been added (like the ability to stop running transfer cleanly
+  between two files by simple pressing Esc key).
+
+- NEW: Archive mode (idea from Peter Alt). This special mode of copying and
+  moving files uses the Archive bit of files on FAT filesystems. This bit
+  is set when a file is created or edited. The original purpose of this bit
+  was probably for easy creating of file back-ups: every file that has been
+  backed up would get this bit cleared and when the backup program would
+  run next time it would not process files with this bit cleared because it
+  would know those files were not changed since last backup.
+
+  And PARCP works exactly like that. When you switch to Archive mode PARCP
+  copies or moves just those files with the Archive bit set and clears the
+  bit for those files after copying/moving.
+
+  Please note Deleting will still delete all files regardless of Archive
+  bit. Originally I thought it would be correct behavior but I am not sure
+  right now. Let me know your opinion, please!
+
+- NEW: Collecting informations about copied/deleted files: file trees are
+  traversed first and PARCP sums up files, folders and total size in bytes
+  of all files that should be copied/moved/deleted. This allows PARCP to
+  detect wrong file masks in CLI and so reports "File(s) not found". It
+  also allows the shiny new Progress bar in ParShell with information how
+  many bytes of total size was already processed - I may soon add even
+  estimated time for finishing the operation!
+
+  Since this Collecting may take long time on slower machines/harddrives I
+  let it switchable.
+
+- NEW: functions for dealing with date and time on both Client and Server!
+  Try out the CLI command SHOWTIME first. Then you may want to synchronize
+  time on Server with your Client's time (command PUTTIME) or on the other
+  hand synchronize your local time on PARCP Client with time on PARCP
+  Server.
+
+  This might be very useful for machines without battery backuped clock
+  (such as AtariST/STE machines) - you can write a simple AUTOEXEC script
+  that would synchronize your Atari time with PC time as soon as you start
+  PARCP.
+
+- many small enhancements I hardly remember all, such as
+
+  o automatic setting PGLEN to 0 so your scripts can use DIR/LDIR and will
+    not be stopped by the end of screen, waiting for a keypress
+
+  o default answers to questions about rewritting of existing files (SKIP)
+    and to bugreports (IGNORE)
+
+  o turning on 8-bit characters in ParShell input dialogs so you can enter
+    name of new directory containing your special national chars (umlauts,
+    hacky, carky)
+
+- when you run PARCP in CLI or unattended (scripting) mode, PARCP will set
+  the exit code according to the reason why it exited. If you program BAT
+  files that call PARCP scripts you will find this exit code handy.
+
+  List of PARCP result codes:
+
+  #define NO_ERROR                     0
+  /* errors during file transfer */
+  #define INTERRUPT_TRANSFER           1
+  #define QUIT_TRANSFER                2
+  #define FILE_NOTFOUND                3
+  #define FILE_SKIPPED                 4
+  #define ERROR_CRC_FAILED             5
+  #define ERROR_READING_FILE           6
+  #define ERROR_WRITTING_FILE          7
+  #define ERROR_DELETING_FILE          8
+
+  /* fatal errors - PARCP exited */
+  #define ERROR_USERSTOP             100
+  #define ERROR_TIMEOUT              101
+  #define ERROR_BADDATA              102
+  #define ERROR_BUGPRG               103
+  #define ERROR_MEMORY               104
+  #define ERROR_HANDSHAKE            105
+  #define ERROR_BADCFG               106
+  #define ERROR_NOTROOT              107
+
+
+- special care has been taken to ensure that filetransfer can be stopped
+  really anytime: you decide if you want to stop the transfer cleanly after
+  finishing currently copied file (by pressing Esc key or both Shifts on
+  Atari) or if you want to interrupt the right now copied file in the
+  middle (by pressing Shift+Control under anything but Linux where you
+  would use Ctrl-C).
+
+- I tested this version for many hours. It worked very well under TOS,
+  MiNT, Linux. Only under Windows98 I got strange problems - it seems that
+  there's a bug in the FastRoutines on PC under Windows98. I don't
+  understand why this problem doesn't show up under Linux, though. I will
+  have to trace it deeply. Right now - if you get a "String not sent" or
+  "error in Send_file" report on DOS/Windows please try to disable the
+  FastRoutines (in PARCP.CFG).
+
+
+3.27b - 9.9.1998
+================
+- "quiet mode" added. This mode is enabled by '-q' switch on command line
+  of PARCP or PARSERVE. In this quiet mode no messages are written to
+  screen. Might help in MagiC where VT52.PRG seems to crash when flooded
+  with too many lines (Hi Peter Alt! And hi Behne bros! :-).
+  Also might be handy in case PARCP Server is running in background and
+  nobody wants to look at his messages. At last the PARCP Client running in
+  scripting mode could be quiet, too.
+  Please note that important error messages are still displayed.
+
+- fixed a bug in BlockSize - setting of that didn't work since v2.90.
+  Sorry, a stupid mistake was there.
+
+- Filebuffers might be zero (0) now. That means do not set any buffering on
+  files (the default buffering set by the library will be used).
+  Please note that if you create a big BlockSize and use Filebuffers = 1
+  then the memory consumption will be 2xBlockSize (once for the block
+  itself and the other for the file buffer). So for e.g. BlockSize = 512
+  and Filebuffers = 1 the memory used by buffers is more than 1MB! That's
+  why you can set Filebuffers to 0 now, to save some memory (if needed).
+
+KNOWN PROBLEM: PC PARCP seems to crash if the BlockSize is too big. Will be
+investigated soon.
+
+
+3.26b - 9.8.1998
+================
+- file copying/moving can be stopped by pressing and holding down
+  Shift+Control key combination. This does not work under Linux, though.
+
+- when an error occurs PARCP does not wait for a keypress before it quits
+  back to operating system. This was needed for the batch transfers (script
+  driven - see the AUTOEXEC directive)
+
+- when PARCP exits unexpectedly (after an error) it sets the result code
+  to different values depending on kind of the error that happened. A list
+  of all values will soon be available.
+
+- several small visual enhancements and text corrections...
+
+
+3.24 - 31.5.1998
+================
+- PARCP is divided into PARSERVER and PARCP. PARSERVER is just a "light"
+  version of PARCP, that can be used just as a Server. Normal PARCP still
+  contains both PARCP Client and Server. This PARSERVER is obviously
+  shorter, consumes less memory and does not need to get "-s" on command
+  line to start in Server mode.
+
+- Atari PARCP is linked with new MiNTlibs pl48. Might help but also create
+  new problems. Check it properly, please.
+
+- Sorting of file listings has been dramatically accelerated using new
+  sorting algorithm (in some cases 68 times faster than previous version).
+
+- Change of sorting in ParShell does not cause re-reading of directory
+  contents - thanks to that re-sorting is even faster and the marks of
+  filenames are not lost. So you can change the sorting freely now.
+
+
+3.21 - 21.3.1998 - US residents are now able to register easily
+================
+- if connection was not successful, debug info is printed. Please
+  report me the values "expected: xxxx, received: xxxx", thanks.
+
+- PAR_OUT is omitted (because operating system should turn the port
+  to default output state before printing automatically).
+
+- US registration site (BMT Micro)
+
+
+3.20 - 28.2.1998 - handshake protocol changed once again
+================
+- Two new directives for dealing with files on MS-DOS filesystems:
+  ShowHidden and KeepAttribs. See documentation for details.
+  Thanks for idea to Dirk Rackley.
+
+  Basically, if you want to copy _ALL_ files from MS-DOS disk you should
+  set both ShowHidden and KeepAttribs to Yes. ShowHidden to copy really all
+  files (otherwise hidden files would not be copied) and KeepAttribs to
+  preserve file attributes (so hidden files stay hidden etc).
+
+  KeepAttribs preserve both MS-DOS/TOS attributes (ReadOnly, Hidden,
+  System, Volume and Archive) and also Unix attributes (user/group/other
+  read/write/exec permissions). Naturally Unix attributes are preserved
+  only when copying between minix or ext2 filesystems. When copying files
+  between Unix and DOS/TOS filesystems the attributes and access rights are
+  emulated if possible by libraries (MiNTlibs and DJGPP libs).
+
+
+3.10 - 15.2.1998 - handshake protocol version has been increased
+================
+- Configuration directive "Overwritting" is obsolete. Two new directives:
+  "OverOlder" and "OverNewer". Destination file might already exists -
+  PARCP decides whether is older or newer than the file being just copied.
+  If both files have the same timestamp, PARCP checks the size of files,
+  and if the destination file is shorter than the copied one, it is
+  considered to be older.
+  Then the "OverOlder" switch is applied to situations where the
+  destination file is older and "OverOlder" in the rest of cases.
+
+  OverOlder/Newer can hold three different values: "S" (means Skip the
+  copied file), "R" (means Replace the destination file) and "A" (means Ask
+  user what to do).
+
+- better support for Moving files: new CLI commands GETDEL and PUTDEL as
+  well as some internal changes for ParShell. Now PARCP should delete only
+  files which were copied correctly (weren't skipped etc).
+
+- progress indicators (percentage and ParShell's one) should not overflow
+  anymore (Hi Jack! :-)
+
+- internal changes for better ParShell (needs a bit of work to be finished)
+
+
+3.04 - 7.2.1998
+===============
+- Autolocator implemented. Two modes of autolocating: if you start typing
+  lowercase, ParShell locates first filename (from current cursor position
+  down) that matches the typed word. However if you start typing uppercase
+  (just first character is checked) ParShell selects all files matching the
+  typed word. The word is deleted by pressing Backspace or Space.
+
+- Left and right arrow keys are now used for faster navigating in the
+  directory tree: right arrow acts as Return/Enter (i.e. goes into folder)
+  while pressing left arrow key gets you up one directory level.
+
+- found a place in MiNTlib where MagiC was not supported. Fixed libraries
+  should cause PARCP server to eat 0% of system time under MagiC when in
+  iddle state (Hi Koos! :-)
+
+
+3.03 - 25.1.1998
+================
+- found and fixed bug in fast asembler routines on IBM (in timeout
+  checking)
+
+- Backspace and Enter on keypad didn't work on IBM (incompatible
+  PDCurses library :-( )
+
+- IBM executables are now linked with patched DJGPP libc. This should
+  solve many mysterious problems like missing CD-ROM drive (getmntent,
+  statfs and other bugs were fixed).
+
+- default number of files in directory buffer was increased to 256.
+  The unregistered version has this number limited to 16 directory
+  entries.
+
+
+3.02 - 18.1.1998
+================
+- on Atari computers pressing Help key show help (same as on F1 key)
+
+- fixed bug in PARCPCFG (it didn't detect some bidirectional ports
+  correctly - sorry!)
+
+- fixed bug in PARCP in Fast assembler routines (they didn't work
+  correctly on some bidirectional ports - sorry!)
+
+- information texts slightly improved
+
+- I forgot to include CSWDPMI in New Year's release, so this time
+  is included again (thanks Werner Zimmermann for note)
+
+- Linux binaries weren't linked statically, now they are (you need
+  no libs for running them)
+
+
+3.01 - 1.1.1998 - Happy New Year!
+===============
+  First, two important news for Atari version of PARCP:
+
+- PARCP now always starts (no more 'Error opening XXX terminal'). It tries
+  to open the $TERM, if defined. If no terminfo entry for $TERM is found or
+  $TERM is not defined at all, PARCP fallbacks to standard VT52. The size
+  of screen is determined by $LINES and $COLS variables, so if you have
+  defined these, use the right values (check it for Falcon in an extended
+  resolution, for example in Mupfel I got wrong values 80x30, while my
+  working resolution is 112x40).
+
+- ParShell is now able to use the ANSI semigraphics characters for drawing
+  boxes on the screen. If you have a font with such characters loaded, try
+  [PARSHELL] directive ANSIfont = Yes (it really looks much better :-) The
+  ANSIfont keyword is not needed under TosWin II with proper terminfo
+  package (my own is included in the PARCP release). Please note that you
+  can change the ANSIfont parameter in ParShell setup, but the change is
+  not immediately visible - you have to save options and restart PARCP.
+  This is because the ANSI font can be changed during initialization phase
+  only.
+
+  And now some general enhancements:
+
+- ParShell gives a short help on pressing the F1 key
+
+- EditBox gives a help on F1, too. Now you can delete whole line by
+  pressing Ctrl-X or Ctrl-Y
+
+- after registering from ParShell the number of lines in buffer and sorting
+  are predefined.
+
+- fixed a bug with Cancelling the Overwrite dialog (it said An error
+  occured while it didn't).
+
+- some bugs with Skipping or Cancelling a Moved file in Overwrite? dialog
+  found. This will need more investigations...
+
+
+3.00beta 29.12.1997
+===================
+  Ha! Finally, the version 3.00 with fullscreen interface is released. This
+version is called beta just because there's no updated docs yet (sorry, I
+like programming more than writting docs :-) There's a huge number of
+changes since the last release of PARCP. The following list is probably not
+even complete, but it gives you a fair chance to imagine the amount of
+work which has been involved in this version 3.00:
+
+- fixed boolean values in PARCP.CFG file. Now you can use both Yes/No and
+  TRUE/FALSE values. PARCP uses Yes/No when updates the config file (it's
+  more human-like to say 'No' instead of 'FALSE' I think).
+
+- DOS PARCP restores the original drive and path upon exit. It should help
+  in BAT file processing.
+
+- ParShell reads the PWD, LPWD and SORT when it returns from command line
+  mode so it reflects the changes made in the CLI interface (thanks Jakub
+  for suggesting that).
+
+- the progress indicator is not redrawn neccessarily during copying several
+  files. Now it's faster and more pleasant to look at.
+
+- serious bug in removing directories in TOS PARCP has been fixed.
+
+- a flexible Alertbox (aka MessageBox) has been written (inspired by MFC).
+  This allowed me to put more warnings and info texts into the ParShell.
+
+- an own Editbox has been written for entering text strings. Now you can
+  enter not only new folder name, but also set up three paths (Viewer,
+  Editor and TMP dir) and also register PARCP straight from ParShell.
+  Further development of this Editbox is planned in near future.
+
+- help in the internal file viewer should now be OK in DOS PARCP
+
+- drag&dropped files should work OK again (a bug with curses
+  initialization)
+
+- NEWS! PARCP prints the type of machine and operating system it runs on,
+  for both Client and Server! Very neat, I would say. You can see reports
+  like 'atari/MiNT' or 'i486/Linux' :-)
+
+- ParShell shows the number and total size of selected files (BTW, it
+  should be yellow on blue, but it's not in DOS PARCP - however it is in
+  TOS PARCP - I don't get it, my source code is OK).
+
+- WARNING! The Ncurses library used to build TOS PARCP is compiled without
+  the termcap fallback support - that means you HAVE TO have proper
+  terminfo package installed if you have set the TERM environment variable.
+  This affect mainly MiNT users without proper terminfo, but it might cause
+  troubles in TOS as well, if the TERM var is set. This problem will be
+  addressed in the next release of PARCP (it requires a serious hack of the
+  ncurses lib)
+
+
+2.92beta 21.12.1997
+===================
+- added new sorting method - sort by file extension (that's the part after
+  last dot in the filename).
+
+- changed the sorting by date - now it's from newer to older by default
+
+- added a few two-seconds waitings when PARCP boots and is a bit misconfigured
+
+- fixed some bugs in fullscreen interface (PARCP 3.0 release is near!)
+
+
+2.91beta 16.12.1997
+===================
+- added new command line switch "-b filename". The filename should be
+  a plain text file with PARCP commands (like cd, get, del etc.). Commands
+  in this file are executed on start of PARCP Client. This new '-b' switch
+  has higher priority than Autoexec directive in configuration file.
+
+
+2.90beta 23.11.1997
+===================
+  More than two months since last official release of PARCP and still
+nothing new - is the author dead or what? No!!! He has been working pretty
+hard to bring you new, the best PARCP version ever! A lot of shiny new
+add-ons, new powerful features and fixed old bugs - that's the new PARCP
+2.90beta!
+
+Let me name the most shocking news:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- support of PC ECP parallel ports as bidirectional ones
+
+- support of LapLink cable (for PC-PC transfers)
+
+- completely new, automatic configuration tool for PC version of PARCP
+
+- the fastest assembler routines for PC!
+
+- executing of batch command files!
+
+- true 32-bit CRC (check sum) for absolutely safe file transfers
+
+New keywords: PortType, CableType, CRC, Filebuffers, BlockSize, Autoexec
+
+Obsolete keywords: Checksum, FileBuffer, BlockLength
+
+sorry, no time for better description. Soon there'll be updated full doc,
+so wait a few days patiently, please...
+
+
+2.70 - 12.09.1997
+=================
+  It may looks like I did nothing last six weeks. The truth is that I spent
+hudreds of hours on developing and testing PARCP 3.00 with its fullscreen
+user interface. It really works now and is tested by a number of users. I
+will however continue releasing 2.x versions of PARCP for a while, until
+the 3.0 becomes stable enough for releasing.
+
+  This version is synchronized with the PARCP 3.00beta-4 release. As it
+changed some internal parameters since the 2.62 version the protocol
+version is raised again. So you can use PARCP 2.70 and 3.00beta-4
+together, but you can't mix it with any older version.
+
+The main changes since last release are as follows:
+
+- internal length of filename increased from 32 to 100 characters, so
+  PARCP is able to handle and even display filenames up to 100
+  characters long now! I think it's more than enough for normal life. Also,
+  PARCP got an intelligent algorithm for shorting the length of too long
+  filenames when displaying them on screen. This should make DIR listing
+  more pleasant.
+
+- transfer can be checked against errors by checksum. Just set CHECKSUM
+  directive or try out CHECK command on PARCP Client. This is disabled by
+  default since it slows things down a bit. Also, I got no errors while
+  copying gigabytes every week for last 12 months. But when you want to be
+  100% sure just enable the switch.
+
+- fixed some serious bugs in dir and sorting routines (it might caused some
+  missing files in DIR listings under certain conditions or a total crash
+  on files with weird timestamp).
+
+- there's a warning if the environment variable PARCPDIR is set and points
+  to a directory but the configuration file is not found there.
+
+- When an error occurs PARCP asks you for pressing the Return key before it
+  quits completely - this gives you enough time to read the error message
+  and possibly react to that.
+
+There is also a number of other changes related mostly to new ParShell of
+PARCP 3.00. Hopefully they won't break anything.
+
+
+2.62 - 29.07.1997
+=================
+- PARCP clearly displays which configuration file is used now.
+
+
+2.60 - 22.07.1997 - PARCP has become keyware, PARCP cable is available
+=================
+- PARCP now recognizes two new directives in the CFG file: Username and
+  Keycode. You'll get the keycode when you register.
+
+- thanks to idea from Ivan Dimbleby I asked Titan Designs if they could
+  make the PARCP cables for PARCP users. They agreed, so now you can order
+  the PARCP cable at them, hopefully. Read the documentation for more
+  informations.
+
+- Sorting has been rewritten to eat less memory. It may however still be
+  too slow on 8 MHz machines - please check it out, I still can optimize it
+  a bit
+
+- fixed priority bug - the $PARCPDIR had a higher priority than the -f
+  command line option by a mistake. Now it is fixed, so you can really use
+  the configuration file you point to with the -f option even when the
+  PARCPDIR variable is set. This allows you to have one most used
+  configuration which the PARCPDIR points to and one or more less
+  frequently used config files which you can select by the option on the
+  command line of PARCP.
+
+- some little fixes and enhancements (Client should get all error reports
+  from Server now).
+
+
+2.55beta - 09.07.1997 - I have reached *two* registered users. Wow! :-|
+=====================
+- Alt-Ctrl-Shift as the Interrupt Key works now in DOS version of PARCP,
+  too. It was rather easy to add this, because the internals of TOS and DOS
+  are *very* similar to each other (even the bit fields of special keys
+  match in TOS and DOS! :-)
+
+- Dir listing has been modified (especially the format of date and time).
+  The maximum length of filename in dir list is 32 characters now (is it
+  enough?) All directories are listed together before files (handy! :-)
+
+- Sorting of dir listing!! I was planning to add it later to the fullscreen
+  version of PARCP 3.0, but I have written it already. Seven different ways
+  of sorting! (see the SORT command discussion).
+
+- sending of filenames with wildcards has been rewritten. You should notice
+  that especially when sending files from top/root directory of large disk
+  with deep directory tree (in previous versions of PARCP the routine for
+  sending files searched through the whole directory tree even when it was
+  unnecessary).
+
+- internal changes for better memory management (is it better, Koos?)
+
+
+2.50 - 22.06.1997 - thanks for bugreport to Ivan Dimbleby
+=================
+- fixed stupid bug in DEL command (template matching didn't work)
+
+- DEL command enhanced - now it deletes files and directories recursively
+  (if SUBD is ON, see documentation)
+
+- new command REN for renaming files (command set is complete now, I think)
+
+- SAVE command enhanced - now it can create missing cfg file, update all
+  values in existing cfg file and even add new lines to existing cfg file -
+  that's important for easy updating cfg files with new commands of still
+  developed PARCP.
+
+
+2.40 - 10.06.1997 - I really need more regular betatesters!
+=================
+- the most important news: I have found the reason of random unexpected
+  crashes of Atari PARCP - the program stack was overflowing :-(
+  C, the high-level language strikes back again.... Next time I'll start in
+  pure assembler, I swear! :-)
+  Anyway, the stack is increased to 16 kB, hopefully it will be enough.
+
+- fixed a problem of drag&drop directories - now you can put on the command
+  line of PARCP not only files to be sent, but also directories or even
+  whole drives! Yes, it's possible to say PARCP D:, which will copy all
+  files from your D: drive to the Server! Isn't it just nice for CD-ROM
+  burning?
+
+- a quick work-around of another possible bug in MiNTlibs (chdir()).
+  It seems that I will have to update a quite few MiNTlibs calls soon.
+  Maybe I'll become the MiNTlibs maintainer? :-)
+
+- fixed a stupid bug which was introduced yesterday in 2.30 release.
+  Sending of multiple files by drag&drop works fine again.
+
+
+2.30 - 09.06.1997 - PARCP is shareware and is supported by CyberSTrider
+=================
+- first of all: found and fixed bug in MiNTlibs! The CD-ROM related
+  problems were caused by this bug (apology goes to author of MetaDOS).
+  Dir should work fine in CD-ROM directories now.
+
+- a problem with long response time of slow CD-ROM drives and CD's with
+  huge directories required to enlarge the standard 10 seconds timeout
+  value. That's why you find new configuration command 'Timeout' which
+  takes decimal number as the timeout value in seconds.
+
+- new Client command STAT for showing actual settings (since switches don't
+  show all settings anymore).
+
+- new Client command SAVE for saving actual settings into configuration
+  file. The SAVE command parses the configuration file and strips all
+  commands - so don't be surprised. Maybe I'll fix that later.
+
+- during drag&drop existing files the 'Quit' possibility now works as
+  expected.
+
+- two new AKA's were introduced: ls = DIR, lls = LDIR (specially for Koos
+  Kuil :-) PARCP Client is fully compatible with usual FTP clients now.
+
+- minor fixes and code cleanups.
+
+
+2.20 - 01.06.1997
+=================
+- Fast assembler routines for Atari have been optimized once more.
+  I think I have reached the limits of hardware and the PARCP can't be
+  made faster. I'll concentrate on IBM assembler routines in future
+  PARCP releases.
+
+- introduced a workaround for annoying bug in MetaDOS - now I know finally
+  why so many clean programs have problems with reading files on CD-ROMs!
+
+- Abort Key stops multiple files transfer now
+
+- new Client commands:
+  mkdir = alias for MD
+  bye   = alias for QUIT
+  LMD -> creates directory on Client (alias is lmkdir)
+
+- when asking for overwrite you can choose "Quit" from multiple files transfer
+
+- fixed silly bug with invisible characters (a bug in my working version
+  of MiNTlibs... soon you will know what's going on here)
+
+
+2.11beta - 26.05.1997
+=====================
+- fixed cosmetic bug in percentage displaying
+
+- greatly enhanced configuration file handling - PARCP can now create
+  or update its configuration file correctly.
+
+- writting PARCP new documentation is in progress...
+
+
+2.10beta - 06.05.1997
+=====================
+
+ Bugfixes:
+ ---------
+- better access rights to directories created on Linux/MiNT
+
+- a workaround for evil bug in TOS (statfs()) - no more
+  "Please insert a X: diskette into drive A:" alerts
+
+ Important changes:
+ ------------------
+- PARCP.CFG - at last! Configuration file of PARCP with all switches and
+  many new variables is available. Details will be discussed in documentation.
+
+- the environment variable "PARCPPAR" is obsolete now! Use the
+  configuration file for setting up your favourite switches etc.
+
+- a new env.variable "PARCPDIR" is recognized. It should point to
+  PARCP home directory (it's used for searching the PARCP.CFG)
+
+- command line parameters reduced to -s (PARCP Server) and -f filename
+  where filename points to an alternate configuration file.
+
+ Configuration file:
+ -------------------
+ It's a plain textfile, can be freely edited by hand. The configuration
+ file is searched:
+ 1) where -f command points to. If it's not a valid config file, then...
+ 2) search for PARCP.CFG in actual directory, then...
+ 3) in PARCP's home directory, and at last...
+ 4) in $PARCPDIR directory
+
+ New features:
+ -------------
+- transfer in progress can be interrupted any time by pressing
+  on Atari: Alt-LeftShift-Control
+  on IBM:   Ctrl-C
+
+- waiting PARCP Server can be aborted the same way as the file transfer
+
+- PARCP can keep time-stamp of copied file (KEEP switch)
+
+- better buffering of files - you can specify how big is file buffer
+
+- variable length of transfer block - use longer block for higher speed
+
+- better handshanking - just protocol revision is checked
+  (PARCP v2.10 will be compatible with newer versions until a protocol
+   change will occur)
+
+- debug version of PARCP can be compiled.
+
+- when HASH is OFF the progress is indicated by percentage of transferred
+  file size
+
+- after drag & drop file on PARCP Client the can receive the file and
+  quit (QuitAfterDrop = TRUE) or stay and wait for another connection.
+
+
+2.04beta - 12.04.1997 - thanks to Koos Kuil for bugreports!
+=====================
+- fixed problem with transferring files 0 bytes long
+
+- fixed problem with displaying free space on a disk
+
+- new command 'F' is recognized in PARCPPAR environment variable.
+  It enables the fast assembler routines on Atari PARCP.
+
+- added CWSDPMI.EXE which provides DPMI services for IBM PARCP.
+  Please read enclosed CWSDPMI.DOC, thanks.
+
+
+2.03beta - 31.03.1997
+=====================
+- FAST ASSEMBLER ROUTINES RE-IMPLEMENTED!! The transfer speed is back
+  to 88 kB/s!! You can select between the original TOS routines and the new
+  fast assembler ones on-the-fly by Client command "FAST". The fast routines
+  are disabled by default for max. compatibility.
+
+- fixed litle problem with "Error reading the file"
+
+- fixed problem with drag&dropping directories
+
+- little cosmetic changes
+
+
+2.02beta - 29.03.1997
+=====================
+- BUGFIX: drag&drop didn't work
+
+- sending of single files (filename without wildcards) is now faster
+  because they aren't searched in directory but send immediately.
+
+
+2.01beta - 28.03.1997
+=====================
+- long awaited feature: PARCP can now send or receive whole subdirectories!
+  By default this is turned on, but it can be turned off by "d" in $PARCPPAR
+  I've also found a bug in Linux's libc, will have to report it...
+
+- PARCP reports the length of transferred file in blocks (= in dots)
+
+- Client's switch commands (HASH,CASE,OVER,SUBD) without the ON or OFF
+  parameter acts as a toggle switch.
+
+- removed two problems with timeouts while waiting for answer to
+  "Overwrite?" question.
+
+
+2.00beta - 25.03.1997
+=====================
+- PARCP has been completely rewritten and is now compiled by GNU C 2.7.2
+
+News: - PARCP uses new method of handshaking (end of "Timeouts" I believe)
+
+      - PARCP supports multitasking operating systems
+
+      - PARCP Server does not hog CPU while waiting for connection!
+
+      - PARCP reads an environment variable PARCPPAR and uses its
+        value for setting of different PARCP options
+
+      - PARCP Client is much more comfortable
+
+      - drag&drop of files onto PARCP Client is supported again!
+
+      - .. and much more, I can't remember it all.
+
+- I have no time for updating docs so I am releasing PARCP `as is', mainly
+  for betatesters.
+
+
+1.00beta - 31.12.1996
+=====================
+- lowlevel assembler code on Atari has been optimized one more time. It
+  saved another 80 CPU cycles in the inner loops. Receiving of two bytes
+  should (in ideal case) take only 350 cycles - that makes the upper limit
+  of transfer speed around fantastic 40 kB/s on standard 8 MHz ST!
+
+- dir listing buffer decreased to 4096 bytes
+
+- HASH mark changed to dot '.' (dot is nicer I think :)
+
+- documentation updated and whole package released.
+
+
+0.78beta - 30.12.1996
+=====================
+- added new commands L/DEL: it, as the name says, deletes files.
+
+- eliminated possible problems with different sizes of library constants
+  between Pure and Borland C (e.g. MAXPATH is 119 on Atari but 260 on PC)
+
+- dir list can now be cancelled by pressing 'q' in "more" prompt
+
+- many code clean ups
+
+
+0.77beta - 28.12.1996
+=====================
+- removed about four errors from send_files(), now it really works
+
+- removed all waitings for a key - now it should be ready for batch
+  processing
+
+
+0.76beta - 27.12.1996
+=====================
+- added new commands PGLEN, GET:
+
+  'PGLEN' sets the number of lines on your screen. Default is 25, but e.g.
+          I have 40 lines on screen. If you set 0 lines, dir listing will
+          not be stopped.
+
+  'GET' transfers a file or files from server to client
+
+- some important code cleanups
+
+- eliminated possible problems with memory overflow in handshake()
+
+
+0.75beta - 26.12.1996
+=====================
+- added new commands LQUIT, HASH:
+
+  'HASH' turnes on and off printing characters indicating transfer in
+         progress
+
+  'LQUIT' is a very important command - it quits just the client while
+          server keeps waiting for another session. This way you can start
+          server on one machine automatically after boot up and connect
+          from the other machine only sometimes when you need to copy a
+          file.
+
+- memory buffers (55 kB) made statical (it may be better than allocating it
+  dynamically every time - especially in multitasking environments)
+
+
+0.74beta - 25.12.1996
+=====================
+- read() -> fread(), because read() on PC can read max 32 kB long block :-/
+
+
+0.73beta - 24.12.1996
+=====================
+- DIR buffer made smaller (20 kB -> 10 kB) (Small memory model on PC)
+
+- little changes of source code with aim at PC compatibility
+
+
+0.72beta - 23.12.1996
+=====================
+- user interface rewritten from scratch. PARCP now acts like ftp client and
+  server. The idea was taken from Parallel communication routines written
+  by Ian D. Gay (gay@sfu.ca).
+
+  Implemented the following commands: L/PWD, L/CD, MD, PUT, L/DIR, HELP
+  and QUIT.
+
+  'PWD' prints the current path (=drive and directory) on server
+
+  'CD' changes the current path on server
+
+  'DIR' lists files in current path on server
+
+  'L-functions' do the same but on client (i.e. local machine)
+
+  'MD' creates directory in current path on server
+
+  'PUT' sends a file or files from client to server
+
+  'HELP' shows short help message
+
+  'QUIT' ends both client and server
+
+- fopen() -> open(), fread() -> read() etc.
+
+- PC timeout increased to 1E7 empty loops
+
+- many small changes in the whole source code
+
+
+0.71beta 24.11.1996
+===================
+- ST part of lowlevel routines has been rewritten into assembler. It is now
+  again much faster (on a plain ST the speed increase went from 16 up to 22
+  kB/s).
+
+- true timer timeouts has been implemented in the ST version of PARCP. The
+  timeout is now set to 3 seconds (I think it is enough even for reading
+  from a floppy).
+
+- Since 0.70beta the transfer can be interrupted anytime by pressing Shift
+  key on Atari computer or Return on PC (as you can see in the source code
+  of lowlevel routines). I forgot to update docs, sorry.
+
+  21.12.1996
+- I thought I would be able to rewrite even the PC part of lowlevel
+  routines into assembler, but I have no time for studying Intel assembler,
+  so I am releasing this version for testing right now.
+
+- PAR_IN and PAR_OUT created.
+
+  PAR_IN sets the parallel port into input state. If you use PARCP
+  regularly and have the PARCP cable connected all the time, you should put
+  PAR_IN into your AUTO folder (Atari) or AUTOEXEC.BAT (PC). It will
+  minimize the danger of destroying your parallel ports.
+
+  PAR_OUT resets the parallel port into output state which is the default
+  after power on or reset of computer. If you want to print on printer
+  after using PARCP, you have to run PAR_OUT first (or reset the computer).
+
+- documentation updated.
+
+
+0.70beta 19.11.1996
+===================
+- timeouts are hopefully away (I don't know why, but it doesn't matter :)
+
+- an old code for handshaking removed (it made more troubles than good
+  things). Now it begins directly with sending or receiving, so please
+  don't start Senders on both ends...
+
+- new speed records achieved: 56 kB/s on unidirectional port and 77 kB/s on
+  bidirectional one (between my Falcon040 and IBM 6x86)
+
+
+0.69beta (unreleased)
+=====================
+- tested communication between two PC's - proved that PARCP is totally
+  flexible and works between any two supported computers (great!)
+
+
+0.68beta (unreleased)
+=====================
+- still fighting.. also speeded up some little routines.
+
+
+0.67beta (unreleased)
+=====================
+- fighting with strange problems - a lot of timeouts and other stuff.
+  Can't find the reason...
+
+
+0.66beta 14.11.1996
+===================
+- initial handshaking has been improved a bit. PARCP now also does check
+  of the PARCP version on both sides and refuses to work if the versions
+  differ from each other.
+
+PC version only:
+- the command line parameter '-p' has been changed: now it is followed by
+  the LPT port number (i.e. 2 for LPT2 or 3 for LPT3 - the default value
+  is 1 => LPT1). That means you need not to search for the address of your
+  parallel port anymore.
+
+- new command line parameter '-H' added: you have to use it if you have
+  unidirectional parallel port only. You also have to use the HW adapter
+  then. If you don't know what type of parallel port your machine has got,
+  you can use my PARTEST.EXE.
+
+- PARTEST.EXE created. Before starting it please disconnect all peripherals
+  and/or cables from your parallel port(s). After selecting LPT port it
+  will tell you if you can use bidirectional feature of your port OR if
+  you will have to build the HW adapter and always specify '-H' on command
+  line of PARCP...
+
+
+0.65beta (unreleased)
+=====================
+- timeouts added to the low-level functions. I have used very simple
+  incrementing of a variable and counting to one million ;-) Hope it will be
+  enough for every kind of machine..
+  Transfer can also be interrupted by a keypress now.
+
+
+0.64beta (unreleased)
+=====================
+PC version only:
+- now this is something we all have been waiting for: a support for
+  bidirectional parallel ports of new PC motherboards!
+  That simply means more speed and no HW adapter (with good PC motherboard,
+  of course). This feature has been implemented thanks to important
+  informations about PC hardware from Michal Kara.
+
+  PARCP now can send or receive files with transfer rate about 72 kB/s on my
+  system (Falcon040/40 and IBM6x86/60). That's quite good I think.
+
+
+0.63beta (unreleased)
+=====================
+- introduced new, MUCH FASTER method of handshaking - the result is
+  dramatical speed improvement (about 50% faster than 0.62beta!!)
+  Thanks for the idea to Michal Kara.
+
+
+0.62beta 23.10.96
+=================
+~ compiled on a friend's PC (thanks to Milos Matus)
+- added option for selecting parallel port address (for PC version only)
+- ST version compiled with ARGV startup code - now you can pass much more
+  filenames on the command line than before (the 126 chars limit is removed)
+
+
+0.6beta 20.10.96
+================
+~ released at the Freecon '96 (Atari show in Pilsen)
+* a bug found: receiving more than one file at session didn't work
+- added check for passed filename (if it exists)
+* corrected bug in CABLES.TXT (the 13th pin of PC connector was wired wrongly)
+
+
+0.5beta 16.10.1996
+==================
+~ the first public release (for friends only :)
+
+0.3beta 20.8.1996
+==================
+~ I demonstrated the first working version of PARCP at Narsil Party 1996 in
+  Trpisov.
+
+0.1alpha 26.7.1996
+==================
+This is the first saved PureC source code of PARCP. It already managed to
+drive both ST and PC parallel ports and to read and write data to it.
+
+First thoughts about PARallel CoPy came to my head in June 1996. I hated
+the bugs in ST-Trans and didn't like the half-way interface of HDD-Daemon
+2.0. That's why I started working on PARCP...

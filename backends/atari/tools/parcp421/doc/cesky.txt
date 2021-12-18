@@ -1,0 +1,56 @@
+    Zdravim vas,
+
+kompletni dokumentace PARCP (dnes jiz pres 100 kB textu) je napsana v
+anglictine. Nemam silu tolik textu napsat jeste jednou cesky a pak navic
+jeste udrzovat obe verze aktualni. Nastesti se PARCP ovlada tak jednoduse,
+ze i kdyz anglictinou nevladnete, PARCP zvladnete. Pokud mate jakekoliv
+pochybnosti, ihned mi napiste elektronicky uvedene v souboru PARCP.HTML (na konci).
+
+Samotny princip cinnosti je jasny: PARCP propoji dva pocitace (je jedno
+jestli jsou to pececka nebo nejake Atari pocitace ci klony od obojiho) pres
+paralelni porty (to jsou ty, kam se obvykle pripojuje tiskarna). Pak PARCP
+umozni prenaset soubory z jednoho pocitace na druhy, vytvaret adresare,
+presouvat je a mazat. Dokonce muzete zkopirovat cely disk najednou! Diky
+pouzitemu paralelnimu portu je prenos dat velmi rychly (az pres 100 kB
+za sekundu, tedy napr. celou HD disketu za 15 sekund a cele ZIP medium za
+necelou ctvrthodinku).
+
+Takze: mame dva pocitace. Jeden bude server (na tom delat nebudeme, ten nam
+bude jen slouzit) a druhy bude klient (na tom budeme zadavat pokyny pro
+prenos dat). Je jedno ktery bude server a ktery klient. Dulezite je jen, ze
+na serveru spustime PARSERVE a rozbehne se primo server. Kdyz uz bezi
+server, muzeme pripojit kabel (pokud jsme to uz neudelali predtim)
+a spustime klienta na druhem pocitaci.
+
+Ted nasleduje velmi zjednoduseny postup jak s PARCP zacit:
+
+A) Atari uzivatele:
+~~~~~~~~~~~~~~~~~~~
+1) spustit PAR_IN.PRG (neni nutne pri PARCP-USB)
+2) pripojit PARCP kabel nebo PARCP-USB prevodnik do paralelniho portu
+3) spustit PARCP.TTP (nebo PARSERVE.TOS, pokud to ma byt server)
+
+B) PC uzivatele:
+~~~~~~~~~~~~~~~~
+1) propojit PARCP-USB s PC USB kabelem
+2) spustit PARCP.EXE (nebo PARSERVE.EXE, pokud to ma byt server)
+
+To je vsechno. Meli byste se octnout v celoobrazovkovem prostredi PARCP,
+ktere umoznuje jednoduse kopirovat, vytvaret, prohlizet ci mazat soubory
+nebo cele adresare (jednoduchym mackanim kurzorovych sipek a funkcnich
+klaves). Ovsem to neni vsechno! PARCP umi take prenaset soubory pouhym
+prenesenim ikon souboru a upustenim nad PARCP ikonou ci dokonce pracovat
+naprosto automaticky jen podle prikazu ve scenari.
+
+Vsechny dalsi informace jsou v PARCP.HTM. Je treba si to (nechat) prelouskat.
+Nerucim za zadne skody, zpusobene at uz primo ci neprimo behem PARCP ci
+pripojovanim kabelu nebo UNI-BI rozhrani k vasim paralelnim portum. Vsechny
+podstatne informace jak se problemum vyhnout jsem napsal v PARCP.HTML.
+Zakladem je spolecna zem obou pocitacu (nejlepe napajet ze stejne zasuvky)
+a kabely pripojovat jen pokud jsou porty ve vstupnim stavu (po spusteni
+PARCP_IN nebo samotneho PARCP).
+
+V pripade nejasnosti piste na adresy:
+
+mail: petr@pstehlik.cz
+http://joy.sophics.cz/parcp/
