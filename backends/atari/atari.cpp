@@ -218,15 +218,30 @@ void disable_VBL()
 	(*((volatile int16*)0x00000452))--;
 }
 
+static uint16 mxMask = 0xFFFF;
+
+void atari_alloc_init()
+{
+    int32 sRAM  = (int32) Mxalloc( -1, 0);
+    int32 sRAMg = (int32) Mxalloc( -1, 0x40); /* In error case Mxalloc( -1, 3) */
+    int32 aRAM  = (int32) Mxalloc( -1, 1);
+    int32 aRAMg = (int32) Mxalloc( -1, 0x41); /* In error case Mxalloc( -1, 3) */
+    if (sRAM == -32)
+        mxMask = 0x0000; /* Mxalloc is not implemented */
+    else if ( ((sRAM + aRAM) == sRAMg) && ((sRAM + aRAM) == aRAMg) )
+        mxMask = 0x0003; /* oldfashion Mxalloc() */
+    else
+        mxMask = 0xFFFF; /* newfashion Mxalloc() */
+}
+
 uintptr_t atari_alloc(uint32 size, uint16 mode)
 {
-	// todo: we may need to append 0x20 to flags for MiNT:
-	// http://toshyp.atari.org/en/00500c.html
-
-	uintptr_t ret = Mxalloc(size, mode | 0x20);
-	if (ret & 0x80000000)
+    uintptr_t ret = 0;
+    if (mxMask != 0)
+	    ret = (uintptr_t) Mxalloc(size, ((mode | 0x20) & mxMask));
+	if ((ret & 0x80000000) || (ret == 0))
 		ret = (uintptr_t) malloc(size);
-	return ret;
+    return ret;
 }
 
 #if USE_EXCEPTION_HANDLER
@@ -470,6 +485,8 @@ void OSystem_Atari::setIsLoading(bool isloading)
 
 bool OSystem_Atari::init()
 {
+    atari_alloc_init();
+
 	// hardware detect
 	_mch = get_cookie('_MCH');
 	_vdo = get_cookie('_VDO');
